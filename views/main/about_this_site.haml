@@ -1,11 +1,12 @@
 :textile
-    This site is made of gold.
+    Some things will go here.
+
+    Otherwise *testing* _textile_ and
 :coderay_raw
     #!ruby
-    class Hello
-        def thing(a,b,*c &block)
-            x = 'hello there'
-            20.times {|x| puts x}
+    class SyntaxHighlighting
+        def this(*args, &block)
+            args.each {|a| puts a}
             yield
         end
     end
