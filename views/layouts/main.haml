@@ -1,0 +1,22 @@
+:javascript
+    $(document).ready(function(){
+        $('.tagline').click(function(){
+            $(this).append('!');
+        });
+    });
+
+%header.line
+    %hgroup
+        %h1.hidden robmcgrail.com
+        %h2.tagline=@patter
+
+%div(class='line ptm pbl mbl')
+    %div(class='unit size2of5' id='content')
+        = yield
+
+    %nav(class='unit size1of5 mll')
+        = partial 'main/nav'
+
+%footer.line
+    = partial 'main/footer'
+
