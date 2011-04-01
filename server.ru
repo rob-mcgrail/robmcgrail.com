@@ -1,7 +1,6 @@
 require 'app'
 
 require 'rack/perftools_profiler'
-require 'rack-bundle'
 require 'rack/throttle'
 require 'rack/contrib'
 # The rack interface. Runs with:
@@ -19,12 +18,9 @@ class Server
   end
 end
 
-# Compiles stylesheets into one.
-# Replace this with something that compiles and compresses on startup, then leaves static.
-use Rack::Bundle, :public_dir => 'public'
-
-# Rack::Static serves files from the apps public folder.
-use Rack::Static, :urls => PUBLIC_FOLDERS, :root => PUBLIC_ROOT
+# Rack::Static can server files from the apps public folder.
+# You're best off doing this via a reverse proxy, ala nginx.
+# use Rack::Static, :urls => PUBLIC_FOLDERS, :root => PUBLIC_ROOT
 
 if DEVELOPMENT_MODE
   # Profiling of requests; foobar?profile=true&times=30
@@ -43,8 +39,7 @@ unless DEVELOPMENT_MODE
     :interval => 2,
     :block_duration => 1800
   # :blacklist => [ip,ip,ip,ip]
-  # Prevent overly quick or endless requests from clients...
-  use Rack::Throttle::Interval, :min => 0.3
+  # Prevent endless requests from clients...
   use Rack::Throttle::Hourly, :max => 600
 end
 
