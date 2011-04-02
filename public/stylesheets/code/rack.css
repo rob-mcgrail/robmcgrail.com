@@ -4,8 +4,9 @@
   font-family: 'Monaco', 'Courier New', 'Terminal', monospace;
   color: #000;
   line-height: 1.4em;
+  margin: 5px;
+  padding: 5px;
 }
-.CodeRay pre { margin: 5px; padding:5px;}
 
 div.CodeRay { }
 
