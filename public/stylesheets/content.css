@@ -36,8 +36,9 @@ cite{display:block; text-align:right; padding-top: 10px;}
 .detail{color: #777; font-size:11px;display:block;}
 /* ====== images ====== */
 .icon{margin-right: 5px;}
-/*rob additions*/
+/* ======= rob additions ======= */
 .subtle{color:#888;font-size:13px;text-align:justify;}
+.warning{color:red;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
 .hidden {display:none;}
 .tagline {font-size:16px}

@@ -7,8 +7,11 @@ module TemplateHelpers
       "<a href='#{url}'>#{text}</a>"
     end
 
-    def image_tag
+    def image_tag(path, opts={})
+      alt = opts[:alt] || ''
+      cls = opts[:class] || ''
 
+      "<img src='#{path}' alt='#{alt}' class='#{cls}'>"
     end
 
   end # module Includes
