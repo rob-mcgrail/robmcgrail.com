@@ -4,14 +4,19 @@ module TemplateHelpers
   module Core
 
     def link_to(url, text)
-      "<a href='http://#{HOSTNAME}/#{url}'>#{text}</a>"
+      unless url =~ /\:\/\//
+        path = "http://#{HOSTNAME}/#{url}"
+      end
+      "<a href='#{url}'>#{text}</a>"
     end
 
     def image_tag(path, opts={})
       alt = opts[:alt] || ''
       cls = opts[:class] || ''
-
-      "<img src='http://#{HOSTNAME}/images/#{path}' alt='#{alt}' class='#{cls}'>"
+      unless path =~ /\:\/\//
+        path = "http://#{HOSTNAME}/images/#{path}"
+      end
+      "<img src='#{path}' alt='#{alt}' class='#{cls}'>"
     end
 
   end # module Includes
