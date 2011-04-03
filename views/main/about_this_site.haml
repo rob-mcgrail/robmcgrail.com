@@ -49,7 +49,7 @@
     # rackup -s server -p port thisfile.ru
     class IveGotYourWebFrameworkRightHere
         def call(env)
-            Router.connect << Rack::Request.new(env.path)
+            Router.connect << Rack::Request.new(env)
         end
     end
 :coderay_raw
@@ -61,8 +61,8 @@
                 @@routes[path] = action
             end
 
-            def connect(path)
-                controller = @@routes[path].split('#')
+            def connect(env)
+                controller = @@routes[env.path].split('#')
                 obj = Kernel.const_get(controller[0]).new
                 ['200', {"Content-Type" => "text/html"}, obj.send(controller[1])]
             end
