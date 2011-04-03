@@ -14,7 +14,7 @@ module TemplateHelpers
       sheets = ''
 
       args.each do |sheet|
-        sheets << "<link rel='stylesheet' href='stylesheets/#{sheet}.css'>\n"
+        sheets << "<link rel='stylesheet' href='http://#{HOSTNAME}/stylesheets/#{sheet}.css'>\n"
       end
       sheets.chomp
     end
@@ -29,7 +29,7 @@ module TemplateHelpers
       scripts = ''
 
       args.each do |js|
-        scripts << "<script src='javascript/#{js}.js'></script>\n"
+        scripts << "<script src='http://#{HOSTNAME}/javascript/#{js}.js'></script>\n"
       end
       scripts.chomp
     end
@@ -42,7 +42,7 @@ module TemplateHelpers
 
 
     def favicon(favicon = 'favicon.ico')
-      "<link rel='shortcut icon' href='images/#{favicon}'>\n"
+      "<link rel='shortcut icon' href='http://#{HOSTNAME}/images/#{favicon}'>\n"
     end
 
 

@@ -7,6 +7,9 @@ PUBLIC_FOLDERS = ['/audio', '/files', '/images', '/javascript', '/stylesheets', 
 # The name of the site - used in title template helper
 SITENAME = 'robmcgrail.com'
 
+# url of the site
+HOSTNAME = 'robmcgrail.com'
+
 # The base template - this should lay out everything up to and including <body>, then yield
 APP_TEMPLATE = 'layouts/application'
 
