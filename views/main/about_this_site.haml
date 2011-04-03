@@ -1,15 +1,15 @@
 :textile
     This site is a place to dump writing and notes, and experiment with getting various things to work.
 
-    h2. Where the author reflects upon rolling your own blog engine and whines about rails
+    h2. Where the author reflects upon rolling your own blog engine in ruby, whines about rails
 
-    Despite what "Jeff Atwood says":http://haacked.com/archive/2006/10/06/Rolling_Your_Own_Blog_Engine.aspx, rolling your own blog engine is fun as hell. The original plan was to build a site in rails. It came out ok, the same way that microwaving something comes out ok.
+    Despite what that "Stack Overflow guy":http://haacked.com/archive/2006/10/06/Rolling_Your_Own_Blog_Engine.aspx says, rolling your own blog engine is fun as hell. The original plan was to build a site in rails. It came out ok, the same way that microwaving something comes out ok.
 
-    Long story short, if you're new to coding things for the web then Rails is a terrible way to get started. And unless you've read through more or less every class you're flying stupid - whatever you're making will be heavier and more brittle than it needs to be. And quicker? (agilerer(c)?) Well probably not - yes until you need to do something interesting. Then you're down the google hole because you don't really know what's been going on the whole time.
+    Long story short, if you're new to coding things for the web then Rails is a terrible way to get started. And unless you've read through more or less every class you're flying stupid - whatever you're making will be heavier and more brittle than it needs to be. (Not brittle as in lacking tests and checks and handling, but the important sort of brittle - 'I want to change this completely, but if I try it'll break because I've been painting-by-google'.)
 
     And to be clear, the problem isn't magic - class_eval and method_missing aren't magic. Everyone should use those all the time. And "Array#fifth":https://github.com/rails/rails/commit/e50530ca3ab5db53ebc74314c54b62b91b932389#diff-1 _definitely_ isn't magic. The problem is a large body of code, most of which you just don't need or understand. By the time you've read it, you could have written it (the bits you want, I mean).
 
-    How convincing you find all that grumbling probably depends on how much you like ruby, as opposed to just liking RoR (because you're a bitter java dev or whatever). If you're the ruby one, and you want to make something for the web, consider the following:
+    How convincing you find all that grumbling probably depends on how much you like ruby, as opposed to just liking RoR (because you're a defecting .net dev or whatever). If you're the first one, and you want to make something for the web, consider the following:
 
 :coderay_raw
     #!ruby
@@ -29,7 +29,7 @@
         def self.start
             config = Mongrel::Configurator.new :host => '0.0.0.0', :port => '8000' do
               listener do
-                uri "/some-thing",      :handler => Thing.new
+                uri "/some-thing",  :handler => Thing.new
               end
 
               trap("INT") { stop }
@@ -45,6 +45,7 @@
 
 :coderay_raw
     #!ruby
+    require 'otherfile'
     # rackup -s server -p port thisfile.ru
     class IveGotYourWebFrameworkRightHere
         def call(env)
@@ -76,5 +77,7 @@
         end
     end
 :textile
-    Now obviously you're not going to do it like that. But you could. And for a personal project, or a quick app, something along those lines is a hell of a lot more fun than trudging through rails. Add param awareness to the router, plug in an ORM (and yeah, you probably do want to use ActiveRecord for that...), write a quick renderer for a "templating language":http://ruby-toolbox.com/categories/template_languages.html, and you have a framework that you know inside out.
+    Now obviously you're not going to do it like that. But you could. And for a personal project, or a quick app, something along those lines is a hell of a lot more fun than trudging through rails.
+
+    Add param awareness to the router, plug in an ORM (and yeah, you probably do want to use ActiveRecord for that...), write a quick renderer for a "templating language":http://ruby-toolbox.com/categories/template_languages.html, and you have a framework that you know inside out. Or just use "merb":http://www.merbivore.com/. I can't run your whole fucking life.
 
