@@ -27,6 +27,7 @@ class Router
     # Adds route to @@routes hash and generates _url helper.
     def add(path, action, name)
       @@routes[path] = action
+      path.slice!(0)
       class_eval %Q?
         def self.#{name}_url
           "#{path}"
