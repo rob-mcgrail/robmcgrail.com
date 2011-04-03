@@ -39,7 +39,7 @@
         end
     end
 :textile
-    That's not much of an app, but that's *all* the code there is (aside from "mongrel":http://rubydoc.info/gems/mongrel/1.1.5/frames). It threads properly. It runs on <10MB of RAM. And deploying it? Well that's all there is to it - just "point something":http://wiki.nginx.org/HttpProxyModule#proxy_pass at the port.
+    That's not much of an app, but that's *all* the code there is (aside from "mongrel":http://rubydoc.info/gems/mongrel/1.1.5/frames). It threads properly. It runs on <10MB of RAM. And deploying it? Well that's all there is to it - just "point something":http://wiki.nginx.org/HttpProxyModule#proxy_pass at the "ports or sockets":http://wiki.nginx.org/HttpUpstreamModule.
 
     Want it server agnostic, with a hilarious proto-router?
 
@@ -49,7 +49,7 @@
     # rackup -s server -p port thisfile.ru
     class IveGotYourWebFrameworkRightHere
         def call(env)
-            Router.connect << Rack::Request.new(env)
+            Router.connect Rack::Request.new(env)
         end
     end
 :coderay_raw
