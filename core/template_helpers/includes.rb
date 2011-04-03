@@ -22,11 +22,11 @@ module TemplateHelpers
 
     def js(*args)
       if args[0] == 'defaults'
+        args.insert(0, 'jquery-1.5.1.min')
         args.delete 'defaults'
-        scripts = "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js'></script>\n"
-      else
-        scripts = ''
       end
+
+      scripts = ''
 
       args.each do |js|
         scripts << "<script src='javascript/#{js}.js'></script>\n"
