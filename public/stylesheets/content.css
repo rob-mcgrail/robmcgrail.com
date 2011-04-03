@@ -41,5 +41,5 @@ cite{display:block; text-align:right; padding-top: 10px;}
 .warning{color:red;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
 .hidden {display:none;}
-.tagline {font-size:16px}
+.tagline {font-size:16px; font-weight:normal;}
 
