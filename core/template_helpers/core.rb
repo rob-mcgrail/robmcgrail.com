@@ -5,7 +5,7 @@ module TemplateHelpers
 
     def link_to(url, text)
       unless url =~ /\:\/\//
-        path = "http://#{HOSTNAME}/#{url}"
+        url = "http://#{HOSTNAME}/#{url}"
       end
       "<a href='#{url}'>#{text}</a>"
     end
