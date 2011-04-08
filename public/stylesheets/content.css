@@ -11,7 +11,6 @@ code{color:#0B8C8F;}
 .important a{font-weight:bold;}/* what is this? */
 /* links */
 a {color: #2c4460; text-decoration: none;}
-p > a {color: #2c4460; text-decoration: underline;}
 a:focus, a:hover {text-decoration: underline;}
 a:focus{background-color:#FFFFCC;}
 a:visited { color:#005a9c; }
