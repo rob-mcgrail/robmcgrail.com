@@ -11,8 +11,8 @@ code{color:#0B8C8F;}
 .important a{font-weight:bold;}/* what is this? */
 /* links */
 a {color: #2c4460; text-decoration: none;}
-a:focus, a:hover {text-decoration: underline;}
-a:focus{background-color:#FFFFCC;}
+a:hover {text-decoration: underline; background:#eee;}
+a:focus{text-decoration: underline; background-color:#FFFFCC;}
 a:visited { color:#005a9c; }
 /* ====== Lists ======*/
 /* numbered list */
@@ -41,6 +41,11 @@ cite{display:block; text-align:right; padding-top: 10px;}
 .warning{color:red;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
 .hidden {display:none;}
-.tagline {font-size:16px; font-weight:normal;}
-#content > p {line-height: 1.7em;}
+/*.tagline {font-size:16px; font-weight:normal;}*/
+#content > p {line-height: 1.6em;}
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {font-family:Georgia,serif;
+padding-bottom:.25em;margin-right:2em;letter-spacing:0px;}
+p+h1, p+h2, p+h3, p+h4, p+h5, p+h6 {padding-top:.3em;}
+p > a, p > a:visited {color: #555; text-decoration: underline;}
+p > a:focus, p > a:hover {color: #333; background:#eee; text-decoration: underline;}
 

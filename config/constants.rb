@@ -8,7 +8,7 @@ PUBLIC_FOLDERS = ['/audio', '/files', '/images', '/javascript', '/stylesheets', 
 SITENAME = 'robmcgrail.com'
 
 # url of the site
-HOSTNAME = 'robmcgrail.com'
+HOSTNAME = '0.0.0.0'
 
 # The base template - this should lay out everything up to and including <body>, then yield
 APP_TEMPLATE = 'layouts/application'
