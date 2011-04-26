@@ -1,0 +1,7 @@
+require 'rubygems'
+require 'redgreen'
+
+require File.dirname(__FILE__) + '/../app'
+
+Dir['test/core/*_test.rb'].each {|file| require file}
+
