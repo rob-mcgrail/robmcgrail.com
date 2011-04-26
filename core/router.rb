@@ -1,3 +1,22 @@
+class Route
+  attr_accessor :space, :params, :controller, :order, :name
+  def initialize
+      @space = nil
+      @params = {}
+      @controller = nil
+      @order = []
+  end
+
+
+  def to_s
+    puts @space
+    puts @params.inspect
+    puts @controller
+    puts @order
+  end
+
+end
+
 class Router
 # The Router class, aka R.
 #
@@ -23,39 +42,90 @@ class Router
   # * Find a nicer api than #add. #<< Wont accept multiple comma sep args
   # for some reason...
 
-  class << self
-    # Adds route to @@routes hash and generates _url helper.
-    def add(path, action, name)
-      @@routes[path] = action
-      path.slice!(0)
-      class_eval %Q?
-        def self.#{name}_url
-          "#{path}"
-        end
-      ?
-    end
+  # Adds route to @@routes hash and generates _url helper.
+  def self.add(path, action, name)
+    # Get rid of first and last slash if present
+    path.slice!(0) if path[0,1] == '/'
+    path.slice!(-1) if path[-1,1] == '/'
+    #path = {:space => 'blog', :category => '1', :slug => 'something'}
+    r = routerize(path)
+    r.controller = action
 
-    # Connects relative_path to respective controller Class#method.
-    # Throws Error#not_found if no routing is possible.
-    #
-    # This is currently very simplistic and will get complicated the minute
-    # we start putting params in routes for resources.
-    def connect(path)
-      if @@routes[path].nil?
-        Error.new.not_found
-      else
-        controller = @@routes[path].split('#')
-        obj = Kernel.const_get(controller[0]).new
-        obj.send(controller[1])
+    @@routes[r.space] = r
+
+    class_eval %Q?
+      def self.#{name}_url
+        "#{r.space}"
       end
+    ?
+  end
+
+
+  def self.routerize(path)
+    r = Route.new
+    r.space = '/' + /^[a-zA-Z_\-\/0-9]+/.match(path).to_s.chomp('/')
+
+    a = path.scan(/:([a-z_\-]+)/)
+    a.each do |p|
+      r.params[p[0].to_sym]=":#{p}"
+      r.order << p[0].to_sym
+    end
+    r
+  end
+
+
+  def self.connect(path)
+    if path.length > 1
+      path.slice!(-1) if path[-1,1] == '/'
     end
 
-    # Returns Class#method for a specific path.
-    def who_controls(path)
-      @@routes[path]
-    end
+    if @@routes[path] != nil
+      controller = @@routes[path].controller.split('#')
+      obj = Kernel.const_get(controller[0]).new
+      obj.send(controller[1])
+    else
 
-  end # class << self
+      fullpath = path.dup
+      i = 0
+
+      while @@routes[path] == nil
+        shrink path
+        i+=1
+      end
+
+      r = @@routes[path]
+
+      if i != r.order.length
+        return Error.new.not_found
+      end
+
+      params = parse_to_params(fullpath, r.order)
+
+      controller = r.controller.split('#')
+      obj = Kernel.const_get(controller[0]).new
+      obj.send(controller[1], params)
+    end
+  end
+
+  private
+
+  def self.shrink(p, i=1)
+    i.times do
+      p.sub!(/\/[^\/]*$/, '')
+    end
+    p
+  end
+
+
+  def self.parse_to_params(path, params)
+    p = {}
+    params.each do |param|
+      p[param] = /[^\/]*$/.match(path).to_s
+      path = shrink(path)
+    end
+    p
+  end
+
 end
 
 R = Router
