@@ -16,7 +16,7 @@ module CacheTools
   end
 
   # Recalculates the size of the hash.
-  def resize(hash)
+  def recalculate_size(hash)
     x = 0
     hash.each {|k,v| x += v[:data].bytesize}
     x
@@ -44,13 +44,17 @@ class TemplateCache
 
     def store(key, data)
       @@h[key] = {:data => data, :time => Time.new}
-      # Increase the cache size
+      # Increase the cache size count
       @@size += data.bytesize
       # Check that we haven't exceeded the maximum
-      if @@size > TEMPLATE_CACHE_MAX
+      if @@size > SETTINGS[:template_cache_max]
         lru_cleanup(@@h)
-        @@size = resize(@@h)
+        @@size = recalculate_size(@@h)
       end
+    end
+
+    def clear
+      @@h = {}; @@size = 0
     end
   end
 end
