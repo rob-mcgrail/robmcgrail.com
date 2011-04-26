@@ -22,16 +22,16 @@ end
 # You're best off doing this via a reverse proxy, ala nginx.
 # use Rack::Static, :urls => PUBLIC_FOLDERS, :root => PUBLIC_ROOT
 
-if DEVELOPMENT_MODE
+if SETTINGS[:development_mode]
   # Profiling of requests; foobar?profile=true&times=30
   # ?mode=methods, mode=objects
-  use Rack::PerftoolsProfiler,
-    :default_printer => 'text',
-    :mode => :walltime
+#  use Rack::PerftoolsProfiler,
+#    :default_printer => 'text',
+#    :mode => :walltime
 end
 
 
-unless DEVELOPMENT_MODE
+unless SETTINGS[:development_mode]
   # Tool for deflecting attacks / malicious bots
   use Rack::Deflect,
     :log => false,

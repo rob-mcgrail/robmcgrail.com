@@ -7,6 +7,8 @@ require 'haml-coderay'
 
 PATH = File.expand_path(File.dirname(__FILE__))
 
+SETTINGS = {}
+
 $:.unshift PATH
 
 require 'config/constants'
