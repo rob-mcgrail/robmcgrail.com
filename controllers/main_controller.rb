@@ -1,5 +1,15 @@
 class Main < AbstractController
 
+  R.add 'test/:cat/:slug', 'Main#test', 'testing'
+
+  def test(params)
+    @params = params
+    @title = @params[:cat]
+    @error = @params[:slug]
+
+    render 'errors/generic'
+  end
+
 
   R.add '/', 'Main#home', 'home'
 
