@@ -43,7 +43,7 @@ cite{display:block; text-align:right; padding-top: 10px;}
 .hidden {display:none;}
 /*.tagline {font-size:16px; font-weight:normal;}*/
 #content > p {line-height: 1.6em;}
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {font-family:Georgia,serif;
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {font-family:'Palatino Linotype','Book Antiqua',Palatino,FreeSerif,serif;
 padding-bottom:.25em;margin-right:2em;letter-spacing:0px;}
 p+h1, p+h2, p+h3, p+h4, p+h5, p+h6 {padding-top:.3em;}
 p > a, p > a:visited {color: #555; text-decoration: underline;}
