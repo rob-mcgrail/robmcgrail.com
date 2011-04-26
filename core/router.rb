@@ -1,9 +1,34 @@
 class Route
-  attr_accessor :space, :params, :controller, :order, :name
+# The Route object, used in the Router's @@router hash.
+# Simply a container for the various route facts.
+  attr_accessor :space, :params, :action, :order
+  # @space:
+  #
+  # The 'namespace' for the route. For simple routes like 'somepage' or 'about/this-site'
+  # this is all that's required to make a conncetion - the path is the @space.
+  # For others, like 'blog/march/12/awesome', the namespace is the static section of the path,
+  # 'blog'. In any situation @space can contain slashes. Params are marked out via : in the route
+  # definition, ala rails.
+  #
+  # @params:
+  #
+  # A hash of the params. {:month => 12, :day => 12, :title => awesome}
+  #
+  # @action:
+  #
+  # Action is the route's Controller and action, in the form of a string like Main#homepage.
+  # This can be a class/instance method pair from anywhere, but normally it will be defined in the
+  # /controllers folder.
+  #
+  # @order:
+  #
+  # Order is an array of the params, as symbols. [:month, :day, :title]. This is used as a simple way
+  # of remembering the order and ammount of params. (r.order.each... r.order.length)
+
   def initialize
       @space = nil
       @params = {}
-      @controller = nil
+      @action = nil
       @order = []
   end
 
@@ -11,7 +36,7 @@ class Route
   def to_s
     puts @space
     puts @params.inspect
-    puts @controller
+    puts @action
     puts @order
   end
 
@@ -32,26 +57,30 @@ class Router
 #
 # The router connects requests to queries via Router.connect(relative_path)
 #
-# Router.who_controls(relative_path) returns the Class#method for that url
+# Router understands params in paths, and you can define routes rails style like:
+#
+# R.add 'blog/:month/:day/:title', 'Blog#show', 'blog_post'
+#
+# Which will interpret 'blog/july/12/how-is-everyone', and pass a params hash to the
+# Blog#show method.
 
-  @@routes = {}
-  # Todo:
-  # * Params/rest actions in routes like /thing/1/new
-  # * Something that generates a static file of all routes on startup?
-  # * Optimise #connect -> do I need to be running split every time?
-  # * Find a nicer api than #add. #<< Wont accept multiple comma sep args
-  # for some reason...
+
+  @@routes = {'' => Route.new}
 
   # Adds route to @@routes hash and generates _url helper.
   def self.add(path, action, name)
-    # Get rid of first and last slash if present
-    path.slice!(0) if path[0,1] == '/'
+    # Get rid of first and last slash if present.
+    path.slice!(0)  if path[0,1] == '/'
     path.slice!(-1) if path[-1,1] == '/'
-    #path = {:space => 'blog', :category => '1', :slug => 'something'}
+    # convert to a Route object.
     r = routerize(path)
-    r.controller = action
-
+    # pass the action in to the Route.
+    r.action = action
+    # Add to @@routes.
+    # Can now be retrieved by r.space, the string of the static component of the path.
     @@routes[r.space] = r
+
+    #FIX ME:
 
     class_eval %Q?
       def self.#{name}_url
@@ -63,9 +92,12 @@ class Router
 
   def self.routerize(path)
     r = Route.new
+    # Grab the static section of the route - anything not prefixed by :
     r.space = '/' + /^[a-zA-Z_\-\/0-9]+/.match(path).to_s.chomp('/')
 
+    # Create an array of anything in the path prefixed by :
     a = path.scan(/:([a-z_\-]+)/)
+    # Place each :thing in the Route#params hash and the Route#order array
     a.each do |p|
       r.params[p[0].to_sym]=":#{p}"
       r.order << p[0].to_sym
@@ -73,43 +105,63 @@ class Router
     r
   end
 
-
+  # The main Router method, that connects path requests from clients to method calls.
   def self.connect(path)
+    # Unless it's the root path ('/'), remove the trailing slash.
     if path.length > 1
       path.slice!(-1) if path[-1,1] == '/'
     end
 
+    # A quick match for simple routes.
     if @@routes[path] != nil
-      controller = @@routes[path].controller.split('#')
-      obj = Kernel.const_get(controller[0]).new
-      obj.send(controller[1])
+      # Check there aren't meant to be params, to avoid matching
+      # stubs of dynamic routes.
+      if @@routes[path].order.length == 0
+        # Parse the action string ('Class#method'), retrieve the class constant,
+        # and send it the method call.
+        action = @@routes[path].action.split('#')
+        obj = Kernel.const_get(action[0]).new
+        obj.send(action[1])
+      else
+        return Error.new.not_found
+      end
     else
-
+      # Backup the path, we're going to be stripping it down to match against
+      # the static part, which is the key for the @@routes hash.
       fullpath = path.dup
-      i = 0
 
+      i = 0
+      # Strip down the route, by each slash (a/b/c/d => a/b/c => a/b)
+      # until a match is made. The @@routes hash contains a '' key, so that
+      # completely stripped paths will match, and then fail later returning a 404.
       while @@routes[path] == nil
         shrink path
         i+=1
       end
 
+      # Retrieve the route by the suitably stripped down path.
       r = @@routes[path]
-
+      # Check that the Route expects as many params as we performed strips.
+      # This is partly a santiy check, makes sure extra params fails, and fails
+      # when there is no match - which matches '' returning an empty Route object.
       if i != r.order.length
         return Error.new.not_found
       end
 
+      # Use the Route#order array to parse the backed up path.
       params = parse_to_params(fullpath, r.order)
-
-      controller = r.controller.split('#')
-      obj = Kernel.const_get(controller[0]).new
-      obj.send(controller[1], params)
+      # Parse the action string ('Class#method'), retrieve the class constant,
+      # and send it the method call, and the params hash.
+      action = r.action.split('#')
+      obj = Kernel.const_get(action[0]).new
+      obj.send(action[1], params)
     end
   end
 
   private
 
   def self.shrink(p, i=1)
+    # Strips down path strings like: a/b/c/d => a/b/c => a/b
     i.times do
       p.sub!(/\/[^\/]*$/, '')
     end
@@ -117,9 +169,15 @@ class Router
   end
 
 
-  def self.parse_to_params(path, params)
+  def self.parse_to_params(path, order)
+    # Iterates through the path, grabbing the last slashed section,
+    # placing it in the params hash with the appropriate key taken from
+    # Route.order, and then stripping the url down a step.
+    # Repeated until the required params are harvested.
+    #
+    # Implications are that paths can't look like: static/dynamic/satic/dynamic
     p = {}
-    params.each do |param|
+    order.each do |param|
       p[param] = /[^\/]*$/.match(path).to_s
       path = shrink(path)
     end
