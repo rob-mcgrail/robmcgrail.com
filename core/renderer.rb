@@ -30,7 +30,7 @@ module Renderer
     @response[:type] = {"Content-Type" => opts[:type] || defaults[:type]}
     layout = opts[:layout] || defaults[:layout]
 
-    app_template = get_template(APP_TEMPLATE)
+    app_template = get_template(SETTINGS[:app_layout])
 
     # This conditional is not ideal. Couldn't get it to work in such a way that the 2nd block
     # arg can not happen without killing the last. May be some way with a proc or rendering
@@ -71,12 +71,11 @@ module Renderer
   # a fair bit of processors - need to profile properly. But the cached version seems to refuse
   # to respond or something strange occasionally...
   def get_template(template)
-    if DEVELOPMENT_MODE
-      File.read(PATH + '/views/' + template + '.haml')
+    if SETTINGS[:development_mode]
+      File.read(PATH + SETTINGS[:view_folder] + template + '.haml')
     else
       if TemplateCache.get(template).nil?
-        puts 'hard read'
-        TemplateCache.store template, File.read(PATH + '/views/' + template + '.haml')
+        TemplateCache.store template, File.read(PATH + SETTINGS[:view_folder] + template + '.haml')
       end
       TemplateCache.get template
     end
