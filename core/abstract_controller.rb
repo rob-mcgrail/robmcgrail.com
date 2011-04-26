@@ -34,5 +34,9 @@ class AbstractController
 #    render 'main/home', :layout => 'layouts/main'
 #  end
 
+  def initialize(params={})
+    @params = params
+  end
+
 end
 

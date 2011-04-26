@@ -8,13 +8,13 @@ module TemplateHelpers
       if args[0] == 'defaults'
         args.delete 'defaults'
         %w(grids libraries space heading media content).each {|a| args << a}
-        args << 'code/' + CODERAY_CSS
+        args << 'code/' + SETTINGS[:coderay_css]
       end
 
       sheets = ''
 
       args.each do |sheet|
-        sheets << "<link rel='stylesheet' href='http://#{HOSTNAME}/stylesheets/#{sheet}.css'>\n"
+        sheets << "<link rel='stylesheet' href='http://#{SETTINGS[:hostname]}/stylesheets/#{sheet}.css'>\n"
       end
       sheets.chomp
     end
@@ -29,7 +29,7 @@ module TemplateHelpers
       scripts = ''
 
       args.each do |js|
-        scripts << "<script src='http://#{HOSTNAME}/javascript/#{js}.js'></script>\n"
+        scripts << "<script src='http://#{SETTINGS[:hostname]}/javascript/#{js}.js'></script>\n"
       end
       scripts.chomp
     end
@@ -37,19 +37,19 @@ module TemplateHelpers
 
     def title(opts={})
       pagename = @title || 'somewhere'
-      title = pagename + ' | ' + SITENAME
+      title = pagename + ' | ' + SETTINGS[:sitename]
     end
 
 
     def favicon(favicon = 'favicon.ico')
-      "<link rel='shortcut icon' href='http://#{HOSTNAME}/images/#{favicon}'>\n"
+      "<link rel='shortcut icon' href='http://#{SETTINGS[:hostname]}/images/#{favicon}'>\n"
     end
 
 
     def ga_tracking
       "<script type='text/javascript'>
 var _gaq = _gaq || [];
-_gaq.push(['_setAccount', '#{GA_CODE}']);
+_gaq.push(['_setAccount', '#{SETTINGS[:ga_code]}']);
 _gaq.push(['_trackPageview']);
 (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

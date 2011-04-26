@@ -5,7 +5,7 @@ module TemplateHelpers
 
     def link_to(url, text)
       unless url =~ /\:\/\//
-        url = "http://#{HOSTNAME}/#{url}"
+        url = "http://#{SETTINGS[:hostname]}#{url}"
       end
       "<a href='#{url}'>#{text}</a>"
     end
@@ -14,7 +14,7 @@ module TemplateHelpers
       alt = opts[:alt] || ''
       cls = opts[:class] || ''
       unless path =~ /\:\/\//
-        path = "http://#{HOSTNAME}/images/#{path}"
+        path = "http://#{SETTINGS[:hostname]}/images/#{path}"
       end
       "<img src='#{path}' alt='#{alt}' class='#{cls}'>"
     end

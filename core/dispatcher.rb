@@ -4,19 +4,14 @@ class Dispatcher
   class << self
 
     def <<(env)
-      begin
-        @response = Router.connect(env.path)
-      rescue
-        if DEVELOPMENT_MODE
-          raise
-        else
-          @response = Error.new.bug
-        end
+      @response = Router.connect(env.path)
+
+      if @response.class != Hash
+        @response = {:code => nil, :type => nil, :body => nil}
       end
 
-
       [
-        @response[:code] || '200',
+        @response[:code] || '501',
         @response[:type] || {"Content-Type" => "text/html"},
         @response[:body] || '<h1>Very serious problem</h1>',
       ]
