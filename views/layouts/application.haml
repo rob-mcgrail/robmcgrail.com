@@ -4,10 +4,10 @@
         %meta{:charset => 'utf-8'}
         %title= title
         = css 'defaults'
-        = js  'defaults', 'jquery.hotkeys'
+        = js  'defaults'
         /[if lte IE 8]
             = js 'html5'
-    %body(class='pal mal')
+    %body(class='mal')
         = yield
         = ga_tracking
 
