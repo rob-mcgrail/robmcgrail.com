@@ -16,7 +16,7 @@ class Main < AbstractController
   def home
     @title = 'home'
 
-    render 'main/home', :layout => 'layouts/main'
+    render 'main/home', :layout => 'layouts/main', :cachable => true
   end
 
 
@@ -25,7 +25,7 @@ class Main < AbstractController
   def about_this_site
     @title = 'about this site'
 
-    render 'main/about_this_site', :layout => 'layouts/main'
+    render 'main/about_this_site', :layout => 'layouts/main', :cachable => true
   end
 
 end
