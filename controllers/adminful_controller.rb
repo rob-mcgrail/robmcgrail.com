@@ -10,7 +10,7 @@ class Adminful < AbstractController
 
   R.add '/render_again', 'Adminful#clear_all_caches', 'clear_caches'
   # Clears the template chache
-  def refresh_templates
+  def clear_all_caches
     @title = 'Cleared all caches'
     @error = 'Cleared all caches'
     TemplateCache.clear
