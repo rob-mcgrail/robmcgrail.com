@@ -1,6 +1,6 @@
 require 'test/unit'
 
-class CacheToolsTest < Test::Unit::TestCase
+class TemplateCacheTest < Test::Unit::TestCase
 
 
   def test_store_and_get_string
@@ -25,11 +25,6 @@ class CacheToolsTest < Test::Unit::TestCase
   end
 
 
-  def test_hash_calculation_is_accurate
-    assert_equal 1, TemplateCache.recalculate_size({'somefile' => {:data => 'a', :time => Time.new}})
-  end
-
-
   def test_clear_clears_cache
     TemplateCache.store('some/file', '12345678910')
     TemplateCache.clear
@@ -44,6 +39,12 @@ class CacheToolsTest < Test::Unit::TestCase
     assert_equal '12345678910', TemplateCache.get('some/file')
   end
 
+
+  def test_hash_calculation_is_accurate
+    TemplateCache.clear
+    TemplateCache.store('somefile','a')
+    assert_equal 1, TemplateCache.size
+  end
 
 end
 
