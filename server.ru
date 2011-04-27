@@ -25,9 +25,9 @@ end
 if SETTINGS[:development_mode]
   # Profiling of requests; foobar?profile=true&times=30
   # ?mode=methods, mode=objects
-#  use Rack::PerftoolsProfiler,
-#    :default_printer => 'text',
-#    :mode => :walltime
+  use Rack::PerftoolsProfiler,
+    :default_printer => 'text',
+    :mode => :walltime
 end
 
 
