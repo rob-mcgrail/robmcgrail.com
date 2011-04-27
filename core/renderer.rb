@@ -22,12 +22,17 @@ module Renderer
       :code => '200',
       :type => 'text/html',
       :layout => nil,
+      :cachable => nil,
     }
 
     @response = {}
 
-    @response[:code] = opts[:code] || defaults[:code]
-    @response[:type] = {"Content-Type" => opts[:type] || defaults[:type]}
+    @response[:code]  =  opts[:code] || defaults[:code]
+    @response[:type]  =  {"Content-Type" => opts[:type] || defaults[:type]}
+    # We flag it as cachable in the router, and this is queried by the Dispatcher, which
+    # is the optimal point at which to be storing and getting cached responses...
+    @response[:cachable] =  opts[:cachable] || defaults[:cachable]
+
     layout = opts[:layout] || defaults[:layout]
 
     app_template = get_template(SETTINGS[:app_layout])
@@ -70,14 +75,14 @@ module Renderer
   # Right now the cache is just a hash. It's also possibly a poor tradeoff - they both use
   # a fair bit of processors - need to profile properly. But the cached version seems to refuse
   # to respond or something strange occasionally...
-  def get_template(template)
+  def get_template(template_name)
     if SETTINGS[:development_mode]
-      File.read(PATH + SETTINGS[:view_folder] + template + '.haml')
+      File.read(PATH + SETTINGS[:view_folder] + template_name + '.haml')
     else
-      if TemplateCache.get(template).nil?
-        TemplateCache.store template, File.read(PATH + SETTINGS[:view_folder] + template + '.haml')
+      if TemplateCache.get(template_name).nil?
+        TemplateCache.store template_name, File.read(PATH + SETTINGS[:view_folder] + template_name + '.haml')
       end
-      TemplateCache.get template
+      TemplateCache.get template_name
     end
   end
 
