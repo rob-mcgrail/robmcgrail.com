@@ -4,19 +4,31 @@ class Dispatcher
   class << self
 
     def <<(env)
-      @response = Router.connect(env.path)
+      if HardCache.get(env.path) != nil
+        @response = {
+          :body => HardCache.get(env.path),
+          :code => '200'}
 
-      if @response.class != Hash
-        @response = {:code => nil, :type => nil, :body => nil}
+          # Fix above - you want to be able to return the whole @response, or be code aware.
+          # Only did this because currently can't use Cache's #bitesize calls...
+      else
+        @response = Router.connect(env.path)
+        # Cache check - can we put this in the HardCache
+        unless SETTINGS == nil
+          if @response[:cachable]
+            HardCache.store env.path, @response[:body]
+          end
+        end
+        # Sanity check - did we get back something invalid. No ducks...
+        if @response.class != Hash
+          @response = {:code => nil, :type => nil, :body => nil}
+        end
       end
-
-      [
-        @response[:code] || '501',
-        @response[:type] || {"Content-Type" => "text/html"},
-        @response[:body] || '<h1>Very serious problem</h1>',
-      ]
+      # Standard rack response, with alternative emergency values.
+      [@response[:code] || '501',
+       @response[:type] || {"Content-Type" => "text/html"},
+       @response[:body] || '<h1>Very serious problem</h1>']
     end
-
   end # class << self
 end
 
