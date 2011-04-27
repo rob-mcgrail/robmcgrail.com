@@ -1,4 +1,4 @@
-body{font-family:Verdana,sans-serif;font-size:14px;color:#333;}
+body{font-family:Verdana,sans-serif;font-size:13px;color:#333;}
 /* **************** CONTENT OBJECTS ***************** */
 
 /* ====== Elements ====== */
@@ -37,7 +37,7 @@ cite{display:block; text-align:right; padding-top: 10px;}
 /* ====== images ====== */
 .icon{margin-right: 5px;}
 /* ======= rob additions ======= */
-.subtle{color:#888;font-size:13px;text-align:justify;}
+.subtle{color:#888;font-size:12px;text-align:justify;}
 .warning{color:red;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
 .hidden {display:none;}
