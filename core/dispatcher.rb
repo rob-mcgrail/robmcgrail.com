@@ -14,7 +14,7 @@ class Dispatcher
       else
         @response = Router.connect(env.path)
         # Cache check - can we put this in the HardCache
-        unless SETTINGS == nil
+        unless SETTINGS[:development_mode]
           if @response[:cachable]
             HardCache.store env.path, @response[:body]
           end
