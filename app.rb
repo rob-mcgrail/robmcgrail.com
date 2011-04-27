@@ -17,7 +17,10 @@ require 'config/gem_settings'
 require 'core/template_helpers/includes'
 require 'core/template_helpers/core'
 
-require 'core/template_cache'
+require 'core/caches/abstract_cache'
+require 'core/caches/template_cache'
+require 'core/caches/hard_cache'
+
 require 'core/renderer'
 require 'core/router'
 require 'core/dispatcher'
