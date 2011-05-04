@@ -1,9 +1,13 @@
 require 'rubygems'
 
+# gem dependencies
 require 'RedCloth'
 require 'haml'
 require 'coderay'
 require 'haml-coderay'
+
+# standlib requirements
+require 'ostruct'
 
 PATH = File.expand_path(File.dirname(__FILE__))
 
