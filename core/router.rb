@@ -80,11 +80,33 @@ class Router
     # Can now be retrieved by r.space, the string of the static component of the path.
     @@routes[r.space] = r
 
-    #FIX ME:
+    #TIDY ME UP...:
 
     class_eval %Q?
-      def self.#{name}_url
-        "#{r.space}"
+      def self.#{name}_url(p={})
+
+        url = "#{r.space}"
+        if #{r.order.length} > 0
+          url << '/'
+          url << p["#{r.order[0]}".to_sym].to_s
+        end
+        if #{r.order.length} > 1
+          url << '/'
+          url << p["#{r.order[1]}".to_sym].to_s
+        end
+        if #{r.order.length} > 2
+          url << '/'
+          url << p["#{r.order[2]}".to_sym].to_s
+        end
+        if #{r.order.length} > 3
+          url << '/'
+          url << p["#{r.order[3]}".to_sym].to_s
+        end
+        if #{r.order.length} > 4
+          url << '/'
+          url << p["#{r.order[4]}".to_sym].to_s
+        end
+        url
       end
     ?
   end
@@ -93,10 +115,10 @@ class Router
   def self.routerize(path)
     r = Route.new
     # Grab the static section of the route - anything not prefixed by :
-    r.space = '/' + /^[a-zA-Z_\-\/0-9]+/.match(path).to_s.chomp('/')
+    r.space = '/' + /^[a-zA-Z+&%\*\?#_\-\/0-9]+/.match(path).to_s.chomp('/')
 
     # Create an array of anything in the path prefixed by :
-    a = path.scan(/:([a-z_\-]+)/)
+    a = path.scan(/:([a-z+&%\*\?#_\-]+)/)
     # Place each :thing in the Route#params hash and the Route#order array
     a.each do |p|
       r.params[p[0].to_sym]=":#{p}"
@@ -111,6 +133,8 @@ class Router
     if path.length > 1
       path.slice!(-1) if path[-1,1] == '/'
     end
+    # Prefix a slash, if there isn't one
+    path = path.insert(0, '/') if path[0,1] != '/'
 
     # A quick match for simple routes.
     if @@routes[path] != nil
@@ -123,7 +147,7 @@ class Router
         obj = Kernel.const_get(action[0]).new
         obj.send(action[1])
       else
-        return Error.new.not_found
+        return 'error - abstract me out in to a class'
       end
     else
       # Backup the path, we're going to be stripping it down to match against
@@ -140,21 +164,21 @@ class Router
       end
 
       # Retrieve the route by the suitably stripped down path.
-      r = @@routes[path]
+      route = @@routes[path]
       # Check that the Route expects as many params as we performed strips.
       # This is partly a santiy check, makes sure extra params fails, and fails
       # when there is no match - which matches '' returning an empty Route object.
-      if i != r.order.length
-        return Error.new.not_found
+      if i != route.order.length
+        return 'error - abstract me out in to a class' #Error.new.not_found
       end
-
       # Use the Route#order array to parse the backed up path.
-      params = parse_to_params(fullpath, r.order)
+      params = parse_to_params(fullpath, route.order)
       # Parse the action string ('Class#method'), retrieve the class constant,
       # and send it the method call, and the params hash.
-      action = r.action.split('#')
-      obj = Kernel.const_get(action[0]).new
-      obj.send(action[1], params)
+      action = route.action.split('#')
+      p = OpenStruct.new(params)
+      obj = Kernel.const_get(action[0]).new(p)
+      obj.send(action[1])
     end
   end
 
@@ -175,9 +199,11 @@ class Router
     # Route.order, and then stripping the url down a step.
     # Repeated until the required params are harvested.
     #
-    # Implications are that paths can't look like: static/dynamic/satic/dynamic
+    # Implications are that paths can't look like: static/dynamic/static/dynamic
+    #
+    # We reverse the order array due to the order returned by #match / shrink combo
     p = {}
-    order.each do |param|
+    order.reverse.each do |param|
       p[param] = /[^\/]*$/.match(path).to_s
       path = shrink(path)
     end
