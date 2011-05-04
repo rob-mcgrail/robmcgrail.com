@@ -2,6 +2,10 @@ require 'test/unit'
 
 class TemplateCacheTest < Test::Unit::TestCase
 
+  def teardown
+    HardCache.clear
+  end
+
 
   def test_store_and_get_string
     TemplateCache.store('some/file', '12345678910')
