@@ -2,6 +2,11 @@ require 'test/unit'
 
 class HardCacheTest < Test::Unit::TestCase
 
+  def teardown
+    HardCache.clear
+  end
+
+
   def test_store_and_get_string
     HardCache.store('some/file', '12345678910')
 
