@@ -2,8 +2,19 @@ require 'test/unit'
 
 class RendererTest < Test::Unit::TestCase
 
-  SETTINGS[:view_folder] = '/test/core/'
-  SETTINGS[:app_layout] = 'fixtures/main'
+  def setup
+    @backup = {}
+    @backup[:view_folder] = SETTINGS[:view_folder]
+    @backup[:app_layout] = SETTINGS[:app_layout]
+
+    SETTINGS[:view_folder] = '/test/core/'
+    SETTINGS[:app_layout] = 'fixtures/main'
+  end
+
+  def teardown
+    SETTINGS[:view_folder] = @backup[:view_folder]
+    SETTINGS[:app_layout] = @backup[:app_layout]
+  end
 
   def test_partial_renders_template
     assert_equal "<p></p>\n", AbstractController.new.partial('fixtures/template')
