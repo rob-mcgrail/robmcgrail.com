@@ -34,8 +34,8 @@ class AbstractController
 #    render 'main/home', :layout => 'layouts/main'
 #  end
 
-  def initialize(params={})
-    @params = params
+  def initialize(p=nil) # make this an empty class where method missing is a warning about no params?
+    @p = p
   end
 
 end
