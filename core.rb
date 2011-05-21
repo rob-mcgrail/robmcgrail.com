@@ -5,9 +5,7 @@ require 'RedCloth'
 require 'haml'
 require 'coderay'
 require 'haml-coderay'
-
-# standlib requirements
-require 'ostruct'
+require 'data_mapper'
 
 PATH = File.expand_path(File.dirname(__FILE__))
 
@@ -29,4 +27,5 @@ require 'core/renderer'
 require 'core/router'
 require 'core/dispatcher'
 require 'core/abstract_controller'
+require 'core/abstract_model'
 
