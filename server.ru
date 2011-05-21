@@ -4,6 +4,7 @@ require 'app'
 require 'rack/perftools_profiler'
 require 'rack/throttle'
 require 'rack/contrib'
+
 # The rack interface. Runs with:
 # rackup -s server -p port server.ru
 #
@@ -13,6 +14,7 @@ require 'rack/contrib'
 # http://rack.rubyforge.org/doc/
 # http://m.onkey.org/ruby-on-rack-1-hello-rack
 # http://rack.rubyforge.org/doc/files/SPEC.html
+
 class Application
   def call(env)
     Dispatcher << Rack::Request.new(env)
@@ -30,6 +32,11 @@ end
 # Rack::Static can server files from the apps public folder.
 # You're best off doing this via a reverse proxy, ala nginx.
 # use Rack::Static, :urls => PUBLIC_FOLDERS, :root => PUBLIC_ROOT
+
+# Check this at some point - how do these work?
+use Rack::Session::Cookie, :key => SETTINGS[:sitename].split('.').first + '_session',
+                           :domain => SETTINGS[:hostname],
+                           :secret => SETTINGS[:secret]
 
 if SETTINGS[:development_mode]
   # Profiling of requests; foobar?profile=true&times=30
