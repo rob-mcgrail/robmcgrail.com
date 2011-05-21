@@ -8,13 +8,15 @@ class Main < AbstractController
     render 'errors/generic'
   end
 
+
   R.add 'test/:cat/:slug', 'Main#test', :type => 'post'
 
-  def test
+  def test_post
     @title = @p.cat
     @error = @b.thing + ' ' + @p.cat
     render 'errors/generic'
   end
+
 
   R.add '/', 'Main#home', :name => 'home'
 
