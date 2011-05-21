@@ -118,7 +118,6 @@ class Router
 
     # Check if route already exists
     if @@routes[r.space]
-      puts '!'
       # If so, make a copy
       d = @@routes[r.space]
       # Check it's not a duplicate type, or a bad duplicate, and if it's not, set additional type
@@ -154,7 +153,11 @@ class Router
       if route.order.length == 0
         params = nil
       else
-        Error.new.not_found
+        if SETTINGS[:development_mode]
+          raise 'Router thinks this is a static route, but there are params...'
+        else
+          Error.new.bug
+        end
       end
     else
       # Backup the path, we're going to be stripping it down to match against
@@ -176,7 +179,11 @@ class Router
       # This is partly a santiy check, makes sure extra params fails, and fails
       # when there is no match - which matches '' returning an empty Route object.
       if i != route.order.length
-        Error.new.not_found
+        if SETTINGS[:development_mode]
+          raise 'Wrong number of params in routing.'
+        else
+          Error.new.bug
+        end
       end
       # Use the Route#order array to parse the backed up path.
       params = parse_to_params(fullpath, route.order)
@@ -190,7 +197,11 @@ class Router
       elsif env.post? and route.post?
         instantiate_controller route.action, :params => params, :body => env.POST
       else
-        Error.new.not_found
+        if SETTINGS[:development_mode]
+          raise 'Router could not find a suitable request type for routing this...'
+        else
+          Error.new.bug
+        end
       end
     else
       Error.new.not_found
