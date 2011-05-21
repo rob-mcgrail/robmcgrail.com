@@ -66,16 +66,21 @@ class Router
 
 
   @@routes = {'' => Route.new}
+#? like this ?  @@post_routes = {'' => Route.new}
 
   # Adds route to @@routes hash and generates _url helper.
   def self.add(path, action, name)
+    # make name an option, along with type (get, post etc)
+    # then make get and post method wrapping add
+    # then add the types to the route object, and they can be queried in a
+    # dispath method in connect
+
+
     # Get rid of first and last slash if present.
     path.slice!(0)  if path[0,1] == '/'
     path.slice!(-1) if path[-1,1] == '/'
     # convert to a Route object.
-    r = routerize(path)
-    # pass the action in to the Route.
-    r.action = action
+    r = routerize(path, action)
     # Add to @@routes.
     # Can now be retrieved by r.space, the string of the static component of the path.
     @@routes[r.space] = r
@@ -106,17 +111,22 @@ class Router
           url << '/'
           url << p["#{r.order[4]}".to_sym].to_s
         end
+        if #{r.order.length} > 5
+          url << '/'
+          url << p["#{r.order[5]}".to_sym].to_s
+        end
         url
       end
     ?
   end
 
 
-  def self.routerize(path)
+  def self.routerize(path, action)
     r = Route.new
     # Grab the static section of the route - anything not prefixed by :
     r.space = '/' + /^[a-zA-Z+&%\*\?#_\-\/0-9]+/.match(path).to_s.chomp('/')
-
+    # pass the action in to the Route.
+    r.action = action
     # Create an array of anything in the path prefixed by :
     a = path.scan(/:([a-z+&%\*\?#_\-]+)/)
     # Place each :thing in the Route#params hash and the Route#order array
@@ -128,7 +138,8 @@ class Router
   end
 
   # The main Router method, that connects path requests from clients to method calls.
-  def self.connect(path)
+  def self.connect(env)
+    path = env.path
     # Unless it's the root path ('/'), remove the trailing slash.
     if path.length > 1
       path.slice!(-1) if path[-1,1] == '/'
@@ -143,6 +154,18 @@ class Router
       if @@routes[path].order.length == 0
         # Parse the action string ('Class#method'), retrieve the class constant,
         # and send it the method call.
+
+
+
+        # to_controller @@routes[path]
+
+        # def to_controller(route)
+          # if post? and route post == nil, error
+          # otherwise deliver
+          # if get? and route
+        # end
+
+
         action = @@routes[path].action.split('#')
         obj = Kernel.const_get(action[0]).new
         obj.send(action[1])
@@ -177,7 +200,8 @@ class Router
       # and send it the method call, and the params hash.
       action = route.action.split('#')
       p = OpenStruct.new(params)
-      obj = Kernel.const_get(action[0]).new(p)
+      b = OpenStruct.new(env.POST)
+      obj = Kernel.const_get(action[0]).new(p, b)
       obj.send(action[1])
     end
   end
