@@ -1,7 +1,7 @@
 class Route
 # The Route object, used in the Router's @@router hash.
 # Simply a container for the various route facts.
-  attr_accessor :space, :params, :action, :order
+  attr_accessor :space, :params, :action, :order, :post, :get
   # @space:
   #
   # The 'namespace' for the route. For simple routes like 'somepage' or 'about/this-site'
@@ -30,14 +30,17 @@ class Route
       @params = {}
       @action = nil
       @order = []
+
+      @post = nil
+      @get = nil
   end
 
+  def post?
+    @post
+  end
 
-  def to_s
-    puts @space
-    puts @params.inspect
-    puts @action
-    puts @order
+  def get?
+    @get
   end
 
 end
@@ -63,30 +66,181 @@ class Router
 #
 # Which will interpret 'blog/july/12/how-is-everyone', and pass a params hash to the
 # Blog#show method.
-
-
-  @@routes = {'' => Route.new}
-#? like this ?  @@post_routes = {'' => Route.new}
-
+  @@routes =  {'' => Route.new}
   # Adds route to @@routes hash and generates _url helper.
-  def self.add(path, action, name)
-    # make name an option, along with type (get, post etc)
-    # then make get and post method wrapping add
-    # then add the types to the route object, and they can be queried in a
-    # dispath method in connect
+  def self.add(path, action, opts={})
 
+    defaults = {
+      :name => nil,
+      :type => 'GET'
+    }
+
+    # Be forgiving for post or POST...
+    opts[:type].upcase if type = opts[:type]
+
+    name = opts[:name] || defaults[:name]
+    type = opts[:type] || defaults[:type]
 
     # Get rid of first and last slash if present.
     path.slice!(0)  if path[0,1] == '/'
     path.slice!(-1) if path[-1,1] == '/'
+
     # convert to a Route object.
-    r = routerize(path, action)
-    # Add to @@routes.
-    # Can now be retrieved by r.space, the string of the static component of the path.
+    r = routerize(path, action, type)
+
+    # Add to routes hash
     @@routes[r.space] = r
 
-    #TIDY ME UP...:
+    # Create a url helper, with usage:
+    # R.things_url or Router.things_url :param1 => 'a', :param2 => 'b'
+    if name and type == 'GET'
+      self.build_helper(name, r)
+    end
+  end
 
+  # Generates the route object, checks it isn't a duplicate.
+  def self.routerize(path, action, type)
+    r = Route.new
+    # Grab the static section of the route - anything not prefixed by :
+    r.space = '/' + /^[a-zA-Z+&%\*\?#_\-\/0-9]+/.match(path).to_s.chomp('/')
+    # pass the action in to the Route.
+    r.action = action
+    # Create an array of anything in the path prefixed by :
+    a = path.scan(/:([a-z+&%\*\?#_\-]+)/)
+    # Place each :thing in the Route#params hash and the Route#order array
+    a.each do |p|
+      r.params[p[0].to_sym]=":#{p}"
+      r.order << p[0].to_sym
+    end
+
+    # Format type for easy setting and getting...
+    type = ('@' + type).downcase.to_sym
+
+    # Check if route already exists
+    if @@routes[r.space]
+      puts '!'
+      # If so, make a copy
+      d = @@routes[r.space]
+      # Check it's not a duplicate type, or a bad duplicate, and if it's not, set additional type
+      if d.instance_variable_get(type) or d.params != r.params
+        return 'Error - route ambiguity'
+      else
+        d.instance_variable_set(type, true)
+      end
+      # Set r to be duplicate...
+      r = d
+    else
+      # Otherwise just set the appropiate type variable to true
+      r.instance_variable_set(type, true)
+    end
+    r
+  end
+
+  # The main Router method, that connects path requests from clients to method calls.
+  def self.connect(env)
+    path = env.path
+    # Unless it's the root path ('/'), remove the trailing slash.
+    if path.length > 1
+      path.slice!(-1) if path[-1,1] == '/'
+    end
+    # Prefix a slash, if there isn't one
+    path = path.insert(0, '/') if path[0,1] != '/'
+
+    # A quick match for simple routes.
+    if @@routes[path]
+      route = @@routes[path]
+      # Check there aren't meant to be params, to avoid matching
+      # stubs of dynamic routes.
+      if route.order.length == 0
+        params = nil
+      else
+        Error.new.not_found
+      end
+    else
+      # Backup the path, we're going to be stripping it down to match against
+      # the static part, which is the key for the @@routes hash.
+      fullpath = path.dup
+
+      i=0
+      # Strip down the route, by each slash (a/b/c/d => a/b/c => a/b)
+      # until a match is made. The @@routes hash contains a '' key, so that
+      # completely stripped paths will match, and then fail later returning a 404.
+      while @@routes[path] == nil
+        shrink path
+        i+=1
+      end
+
+      # Retrieve the route by the suitably stripped down path.
+      route = @@routes[path]
+      # Check that the Route expects as many params as we performed strips.
+      # This is partly a santiy check, makes sure extra params fails, and fails
+      # when there is no match - which matches '' returning an empty Route object.
+      if i != route.order.length
+        Error.new.not_found
+      end
+      # Use the Route#order array to parse the backed up path.
+      params = parse_to_params(fullpath, route.order)
+    end
+
+    # Parse the action string ('Class#method'), retrieve the class constant,
+    # and send it the method call, and the params hash.
+    if route
+      if env.get? and route.get?
+        instantiate_controller route.action, :params => params
+      elsif env.post? and route.post?
+        instantiate_controller route.action, :params => params, :body => env.POST
+      else
+        Error.new.not_found
+      end
+    else
+      Error.new.not_found
+    end
+  end
+
+
+  private
+
+
+  def self.shrink(p, i=1)
+    # Strips down path strings like: a/b/c/d => a/b/c => a/b
+    i.times do
+      p.sub!(/\/[^\/]*$/, '')
+    end
+    p
+  end
+
+
+  def self.parse_to_params(path, order)
+    # Iterates through the path, grabbing the last slashed section,
+    # placing it in the params hash with the appropriate key taken from
+    # Route.order, and then stripping the url down a step.
+    # Repeated until the required params are harvested.
+    #
+    # Implications are that paths can't look like: static/dynamic/static/dynamic
+    #
+    # We reverse the order array due to the order returned by #match / shrink combo
+    p = {}
+    order.reverse.each do |param|
+      p[param] = /[^\/]*$/.match(path).to_s
+      path = shrink(path)
+    end
+    p
+  end
+
+
+  def self.instantiate_controller(action, opts={})
+    params = opts[:params] || nil
+    body = opts[:body] || nil
+
+    action = action.split('#')
+    params = OpenStruct.new(params) if params
+    body = OpenStruct.new(body) if body
+    obj = Kernel.const_get(action[0]).new(params, body)
+    obj.send(action[1])
+  end
+
+
+  def self.build_helper(name, r)
     class_eval %Q?
       def self.#{name}_url(p={})
 
@@ -118,120 +272,6 @@ class Router
         url
       end
     ?
-  end
-
-
-  def self.routerize(path, action)
-    r = Route.new
-    # Grab the static section of the route - anything not prefixed by :
-    r.space = '/' + /^[a-zA-Z+&%\*\?#_\-\/0-9]+/.match(path).to_s.chomp('/')
-    # pass the action in to the Route.
-    r.action = action
-    # Create an array of anything in the path prefixed by :
-    a = path.scan(/:([a-z+&%\*\?#_\-]+)/)
-    # Place each :thing in the Route#params hash and the Route#order array
-    a.each do |p|
-      r.params[p[0].to_sym]=":#{p}"
-      r.order << p[0].to_sym
-    end
-    r
-  end
-
-  # The main Router method, that connects path requests from clients to method calls.
-  def self.connect(env)
-    path = env.path
-    # Unless it's the root path ('/'), remove the trailing slash.
-    if path.length > 1
-      path.slice!(-1) if path[-1,1] == '/'
-    end
-    # Prefix a slash, if there isn't one
-    path = path.insert(0, '/') if path[0,1] != '/'
-
-    # A quick match for simple routes.
-    if @@routes[path] != nil
-      # Check there aren't meant to be params, to avoid matching
-      # stubs of dynamic routes.
-      if @@routes[path].order.length == 0
-        # Parse the action string ('Class#method'), retrieve the class constant,
-        # and send it the method call.
-
-
-
-        # to_controller @@routes[path]
-
-        # def to_controller(route)
-          # if post? and route post == nil, error
-          # otherwise deliver
-          # if get? and route
-        # end
-
-
-        action = @@routes[path].action.split('#')
-        obj = Kernel.const_get(action[0]).new
-        obj.send(action[1])
-      else
-        return 'error - abstract me out in to a class'
-      end
-    else
-      # Backup the path, we're going to be stripping it down to match against
-      # the static part, which is the key for the @@routes hash.
-      fullpath = path.dup
-
-      i = 0
-      # Strip down the route, by each slash (a/b/c/d => a/b/c => a/b)
-      # until a match is made. The @@routes hash contains a '' key, so that
-      # completely stripped paths will match, and then fail later returning a 404.
-      while @@routes[path] == nil
-        shrink path
-        i+=1
-      end
-
-      # Retrieve the route by the suitably stripped down path.
-      route = @@routes[path]
-      # Check that the Route expects as many params as we performed strips.
-      # This is partly a santiy check, makes sure extra params fails, and fails
-      # when there is no match - which matches '' returning an empty Route object.
-      if i != route.order.length
-        return 'error - abstract me out in to a class' #Error.new.not_found
-      end
-      # Use the Route#order array to parse the backed up path.
-      params = parse_to_params(fullpath, route.order)
-      # Parse the action string ('Class#method'), retrieve the class constant,
-      # and send it the method call, and the params hash.
-      action = route.action.split('#')
-      p = OpenStruct.new(params)
-      b = OpenStruct.new(env.POST)
-      obj = Kernel.const_get(action[0]).new(p, b)
-      obj.send(action[1])
-    end
-  end
-
-  private
-
-  def self.shrink(p, i=1)
-    # Strips down path strings like: a/b/c/d => a/b/c => a/b
-    i.times do
-      p.sub!(/\/[^\/]*$/, '')
-    end
-    p
-  end
-
-
-  def self.parse_to_params(path, order)
-    # Iterates through the path, grabbing the last slashed section,
-    # placing it in the params hash with the appropriate key taken from
-    # Route.order, and then stripping the url down a step.
-    # Repeated until the required params are harvested.
-    #
-    # Implications are that paths can't look like: static/dynamic/static/dynamic
-    #
-    # We reverse the order array due to the order returned by #match / shrink combo
-    p = {}
-    order.reverse.each do |param|
-      p[param] = /[^\/]*$/.match(path).to_s
-      path = shrink(path)
-    end
-    p
   end
 
 end
