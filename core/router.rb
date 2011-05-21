@@ -1,4 +1,5 @@
 class Route
+  require 'ostruct'
 # The Route object, used in the Router's @@router hash.
 # Simply a container for the various route facts.
   attr_accessor :space, :params, :action, :order, :post, :get
