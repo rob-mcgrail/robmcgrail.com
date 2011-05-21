@@ -12,7 +12,7 @@ class Dispatcher
           # Fix above - you want to be able to return the whole @response, or be code aware.
           # Only did this because currently can't use Cache's #bitesize calls...
       else
-        @response = Router.connect(env.path)
+        @response = Router.connect(env)
         # Cache check - can we put this in the HardCache
         unless SETTINGS[:development_mode]
           if @response[:cachable]
