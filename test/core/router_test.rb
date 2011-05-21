@@ -1,5 +1,7 @@
 require 'test/unit'
 require File.dirname(__FILE__) + '/fixtures/testing_controller.rb'
+require File.dirname(__FILE__) + '/fixtures/fake_rack_env.rb'
+
 
 class RouterTest < Test::Unit::TestCase
 
@@ -9,7 +11,7 @@ class RouterTest < Test::Unit::TestCase
   end
 
   def test_takes_and_retrieves_static_url
-    assert_equal 'abcd', R.connect('/test')
+    assert_equal 'abcd', R.connect(Env.new '/test')
   end
 
   def test_creates_static_url_url_helper
@@ -17,32 +19,32 @@ class RouterTest < Test::Unit::TestCase
   end
 
   def test_retrieves_static_url_with_trailing_slash
-    assert_equal 'abcd', R.connect('/test/')
+    assert_equal 'abcd', R.connect(Env.new '/test/')
   end
 
   def test_handles_slashes_in_static_urls
     R.add 'test/thing/another/many', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect('/test/thing/another/many')
+    assert_equal 'abcd', R.connect(Env.new '/test/thing/another/many')
 
     R.add 'test/thing/another', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect('/test/thing/another')
+    assert_equal 'abcd', R.connect(Env.new '/test/thing/another')
 
     R.add 'test/thing', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect('/test/thing')
+    assert_equal 'abcd', R.connect(Env.new '/test/thing')
   end
 
   def test_not_fussy_about_prefixed_slashes
-    assert_equal 'abcd', R.connect('/test')
+    assert_equal 'abcd', R.connect(Env.new '/test')
 
-    assert_equal 'abcd', R.connect('test')
+    assert_equal 'abcd', R.connect(Env.new 'test')
 
     assert_equal '/test', R.basic_url
 
     R.add '/anothertest', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect('/anothertest')
+    assert_equal 'abcd', R.connect(Env.new '/anothertest')
 
     R.add '/anothertest', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect('anothertest')
+    assert_equal 'abcd', R.connect(Env.new 'anothertest')
 
     R.add '/anothertest', 'TestingController#basic', 'basic'
     assert_equal '/anothertest', R.basic_url
@@ -51,57 +53,57 @@ class RouterTest < Test::Unit::TestCase
   def test_handles_homepage_urls
     R.add '/', 'TestingController#home', 'home'
 
-    assert_equal 'home', R.connect('/')
-    assert_equal 'home', R.connect('')
+    assert_equal 'home', R.connect(Env.new '/')
+    assert_equal 'home', R.connect(Env.new '')
     assert_equal '/', R.home_url
   end
 
   def test_handles_special_characters_in_static_urls
     R.add '/a//b/', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/a//b/')
+    assert_equal 'abcd', R.connect(Env.new '/a//b/')
 
     R.add 'x+y', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/x+y')
+    assert_equal 'abcd', R.connect(Env.new '/x+y')
 
     R.add 'x&y', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/x&y')
+    assert_equal 'abcd', R.connect(Env.new '/x&y')
 
     R.add '--', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/--')
+    assert_equal 'abcd', R.connect(Env.new '/--')
 
     R.add '__', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/__')
+    assert_equal 'abcd', R.connect(Env.new '/__')
 
     R.add '??', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/??')
+    assert_equal 'abcd', R.connect(Env.new '/??')
 
     R.add '**', 'TestingController#basic', 'x'
-    assert_equal 'abcd', R.connect('/**')
+    assert_equal 'abcd', R.connect(Env.new '/**')
   end
 
   def test_understands_params
-    assert_equal 'things and 2010', R.connect('/testing/things/2010')
+    assert_equal 'things and 2010', R.connect(Env.new '/testing/things/2010')
   end
 
   def test_not_fussy_about_prefixed_slashes_for_params
-    assert_equal 'things and 2010', R.connect('/testing/things/2010')
+    assert_equal 'things and 2010', R.connect(Env.new '/testing/things/2010')
 
-    assert_equal 'things and 2010', R.connect('testing/things/2010')
+    assert_equal 'things and 2010', R.connect(Env.new 'testing/things/2010')
   end
 
   def test_retrieves_dynamic_url_with_trailing_slash
-    assert_equal 'things and 2010', R.connect('/testing/things/2010/')
+    assert_equal 'things and 2010', R.connect(Env.new '/testing/things/2010/')
   end
 
   def test_handles_static_slashes_in_dynamic_urls
     R.add 'test/thing/another/many/:cat/:year', 'TestingController#params_test', 'params_test'
-    assert_equal 'things and 2010', R.connect('/test/thing/another/many/things/2010')
+    assert_equal 'things and 2010', R.connect(Env.new '/test/thing/another/many/things/2010')
 
     R.add 'test/thing/another/:cat/:year', 'TestingController#params_test', 'params_test'
-    assert_equal 'things and 2010', R.connect('/test/thing/another/things/2010')
+    assert_equal 'things and 2010', R.connect(Env.new '/test/thing/another/things/2010')
 
     R.add 'test/thing/:cat/:year', 'TestingController#params_test', 'params_test'
-    assert_equal 'things and 2010', R.connect('/test/thing/things/2010')
+    assert_equal 'things and 2010', R.connect(Env.new '/test/thing/things/2010')
   end
 
 
@@ -110,12 +112,12 @@ class RouterTest < Test::Unit::TestCase
   end
 
   def test_handles_special_characters_in_dynamic_urls
-    assert_equal 'a+b and a+b', R.connect('/testing/a+b/a+b')
-    assert_equal 'a&b and a&b', R.connect('/testing/a&b/a&b')
-    assert_equal 'a-b and a-b', R.connect('/testing/a-b/a-b')
-    assert_equal 'a_b and a_b', R.connect('/testing/a_b/a_b')
-    assert_equal 'a?b and a?b', R.connect('/testing/a?b/a?b')
-    assert_equal 'a*b and a*b', R.connect('/testing/a*b/a*b')
+    assert_equal 'a+b and a+b', R.connect(Env.new '/testing/a+b/a+b')
+    assert_equal 'a&b and a&b', R.connect(Env.new '/testing/a&b/a&b')
+    assert_equal 'a-b and a-b', R.connect(Env.new '/testing/a-b/a-b')
+    assert_equal 'a_b and a_b', R.connect(Env.new '/testing/a_b/a_b')
+    assert_equal 'a?b and a?b', R.connect(Env.new '/testing/a?b/a?b')
+    assert_equal 'a*b and a*b', R.connect(Env.new '/testing/a*b/a*b')
   end
 end
 
