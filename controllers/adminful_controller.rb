@@ -1,5 +1,5 @@
 class Adminful < AbstractController
-  R.add '/fresh_templates', 'Adminful#refresh_templates', 'refresh_templates'
+  R.add '/fresh_templates', 'Adminful#refresh_templates', :name => 'refresh_templates'
   # Clears the template chache
   def refresh_templates
     @title = 'Cleared template caches'
@@ -8,7 +8,7 @@ class Adminful < AbstractController
     render 'errors/generic'
   end
 
-  R.add '/render_again', 'Adminful#clear_all_caches', 'clear_caches'
+  R.add '/render_again', 'Adminful#clear_all_caches', :name => 'clear_caches'
   # Clears the template chache
   def clear_all_caches
     @title = 'Cleared all caches'

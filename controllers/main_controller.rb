@@ -1,16 +1,15 @@
 class Main < AbstractController
 
-  R.add 'test/:cat/:slug', 'Main#test', 'testing'
+  R.add 'test/:cat/:slug', 'Main#test', :name => 'testing'
 
   def test
     @title = @p.cat
     @error = @p.slug
-
     render 'errors/generic'
   end
 
 
-  R.add '/', 'Main#home', 'home'
+  R.add '/', 'Main#home', :name => 'home'
 
   def home
     @title = 'home'
@@ -19,7 +18,7 @@ class Main < AbstractController
   end
 
 
-  R.add '/about-this-site', 'Main#about_this_site', 'about_this_site'
+  R.add '/about-this-site', 'Main#about_this_site', :name => 'about_this_site'
 
   def about_this_site
     @title = 'about this site'
