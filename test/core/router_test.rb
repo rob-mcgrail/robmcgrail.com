@@ -2,13 +2,10 @@ require 'test/unit'
 require File.dirname(__FILE__) + '/fixtures/testing_controller.rb'
 require File.dirname(__FILE__) + '/fixtures/fake_rack_env.rb'
 
+  R.add 'test', 'TestingController#basic', :name => 'basic'
+  R.add 'testing/:cat/:year', 'TestingController#params_test', :name => 'params_test'
 
 class RouterTest < Test::Unit::TestCase
-
-  def setup
-    R.add 'test', 'TestingController#basic', 'basic'
-    R.add 'testing/:cat/:year', 'TestingController#params_test', 'params_test'
-  end
 
   def test_takes_and_retrieves_static_url
     assert_equal 'abcd', R.connect(Env.new '/test')
@@ -23,13 +20,13 @@ class RouterTest < Test::Unit::TestCase
   end
 
   def test_handles_slashes_in_static_urls
-    R.add 'test/thing/another/many', 'TestingController#basic', 'basic'
+    R.add 'test/thing/another/many', 'TestingController#basic'
     assert_equal 'abcd', R.connect(Env.new '/test/thing/another/many')
 
-    R.add 'test/thing/another', 'TestingController#basic', 'basic'
+    R.add 'test/thing/another', 'TestingController#basic'
     assert_equal 'abcd', R.connect(Env.new '/test/thing/another')
 
-    R.add 'test/thing', 'TestingController#basic', 'basic'
+    R.add 'test/thing', 'TestingController#basic'
     assert_equal 'abcd', R.connect(Env.new '/test/thing')
   end
 
@@ -40,18 +37,18 @@ class RouterTest < Test::Unit::TestCase
 
     assert_equal '/test', R.basic_url
 
-    R.add '/anothertest', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect(Env.new '/anothertest')
+    R.add '/anothertest1', 'TestingController#basic'
+    assert_equal 'abcd', R.connect(Env.new '/anothertest1')
 
-    R.add '/anothertest', 'TestingController#basic', 'basic'
-    assert_equal 'abcd', R.connect(Env.new 'anothertest')
+    R.add '/anothertest2', 'TestingController#basic'
+    assert_equal 'abcd', R.connect(Env.new 'anothertest2')
 
-    R.add '/anothertest', 'TestingController#basic', 'basic'
-    assert_equal '/anothertest', R.basic_url
+    R.add '/anothertest3', 'TestingController#basic', :name => 'basic'
+    assert_equal '/anothertest3', R.basic_url
   end
 
   def test_handles_homepage_urls
-    R.add '/', 'TestingController#home', 'home'
+    R.add '/', 'TestingController#home', :name => 'home'
 
     assert_equal 'home', R.connect(Env.new '/')
     assert_equal 'home', R.connect(Env.new '')
@@ -59,7 +56,7 @@ class RouterTest < Test::Unit::TestCase
   end
 
   def test_handles_special_characters_in_static_urls
-    R.add '/a//b/', 'TestingController#basic', 'x'
+    R.add '/a//b/', 'TestingController#basic'
     assert_equal 'abcd', R.connect(Env.new '/a//b/')
 
     R.add 'x+y', 'TestingController#basic', 'x'
@@ -96,14 +93,14 @@ class RouterTest < Test::Unit::TestCase
   end
 
   def test_handles_static_slashes_in_dynamic_urls
-    R.add 'test/thing/another/many/:cat/:year', 'TestingController#params_test', 'params_test'
-    assert_equal 'things and 2010', R.connect(Env.new '/test/thing/another/many/things/2010')
+    R.add 'test2/thing/another/many/:cat/:year', 'TestingController#params_test'
+    assert_equal 'things and 2010', R.connect(Env.new '/test2/thing/another/many/things/2010')
 
-    R.add 'test/thing/another/:cat/:year', 'TestingController#params_test', 'params_test'
-    assert_equal 'things and 2010', R.connect(Env.new '/test/thing/another/things/2010')
+    R.add 'test2/thing/another/:cat/:year', 'TestingController#params_test', 'params_test'
+    assert_equal 'things and 2010', R.connect(Env.new '/test2/thing/another/things/2010')
 
-    R.add 'test/thing/:cat/:year', 'TestingController#params_test', 'params_test'
-    assert_equal 'things and 2010', R.connect(Env.new '/test/thing/things/2010')
+    R.add 'test2/thing/:cat/:year', 'TestingController#params_test', 'params_test'
+    assert_equal 'things and 2010', R.connect(Env.new '/test2/thing/things/2010')
   end
 
 
@@ -119,5 +116,13 @@ class RouterTest < Test::Unit::TestCase
     assert_equal 'a?b and a?b', R.connect(Env.new '/testing/a?b/a?b')
     assert_equal 'a*b and a*b', R.connect(Env.new '/testing/a*b/a*b')
   end
+
+  # needed :
+  # def test_ignore_case_for_request_type
+  # def distinguishes between post and get
+  # def can't post to get
+  # def can't get via post
+  # only get makes url helper
+  # def post data makes its way through
 end
 
