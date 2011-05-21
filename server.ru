@@ -1,3 +1,4 @@
+require 'core'
 require 'app'
 
 require 'rack/perftools_profiler'
@@ -12,10 +13,18 @@ require 'rack/contrib'
 # http://rack.rubyforge.org/doc/
 # http://m.onkey.org/ruby-on-rack-1-hello-rack
 # http://rack.rubyforge.org/doc/files/SPEC.html
-class Server
+class Application
   def call(env)
     Dispatcher << Rack::Request.new(env)
   end
+
+# see : http://brainspl.at/articles/2008/04/18/deferred-requests-with-merb-ebb-and-thin
+# and : http://ghettochip.com/05_rack_machinery.html
+
+#  def deferred?(env)
+#    true
+#  end
+
 end
 
 # Rack::Static can server files from the apps public folder.
@@ -43,6 +52,5 @@ unless SETTINGS[:development_mode]
   use Rack::Throttle::Hourly, :max => 600
 end
 
-
-run Server.new
+run Application.new
 
