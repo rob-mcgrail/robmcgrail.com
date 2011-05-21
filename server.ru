@@ -24,14 +24,14 @@ class Application
 # and : http://ghettochip.com/05_rack_machinery.html
 
 #  def deferred?(env)
-#    true
+#    ?
 #  end
 
 end
 
 # Rack::Static can server files from the apps public folder.
 # You're best off doing this via a reverse proxy, ala nginx.
-# use Rack::Static, :urls => PUBLIC_FOLDERS, :root => PUBLIC_ROOT
+# use Rack::Static, :urls => SETTINGS[:public_folders], :root => SETTINGS[:public_root]
 
 # Check this at some point - how do these work?
 use Rack::Session::Cookie, :key => SETTINGS[:sitename].split('.').first + '_session',
