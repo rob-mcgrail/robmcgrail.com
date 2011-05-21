@@ -31,3 +31,6 @@ SETTINGS[:hard_cache_max] = 1_000_000
 # Location of views. Slash on both sides, in app root.
 SETTINGS[:view_folder] = '/views/'
 
+# Secret for salting things.
+SETTINGS[:secret] = '73rd7yr879rweri34r8y7wrwery8i7dfgwr87tkjgjhfjhfjhgjhgjftrd65e76r7t87t8'
+
