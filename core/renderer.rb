@@ -1,5 +1,4 @@
 module Renderer
-
   # The rendering method, mixed in to AbstractController, called at the end of
   # controller methods ala: render 'blog/show', :layout => 'layouts/blog'
   #
@@ -29,6 +28,7 @@ module Renderer
 
     @response[:code]  =  opts[:code] || defaults[:code]
     @response[:type]  =  {"Content-Type" => opts[:type] || defaults[:type]}
+
     # We flag it as cachable in the router, and this is queried by the Dispatcher, which
     # is the optimal point at which to be storing and getting cached responses...
     @response[:cachable] =  opts[:cachable] || defaults[:cachable]

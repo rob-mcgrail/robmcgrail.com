@@ -1,5 +1,4 @@
 class Route
-  require 'ostruct'
 # The Route object, used in the Router's @@router hash.
 # Simply a container for the various route facts.
   attr_accessor :space, :params, :action, :order, :post, :get
@@ -47,6 +46,7 @@ class Route
 end
 
 class Router
+  require 'ostruct'
 # The Router class, aka R.
 #
 # Connects requests to controllers, and also provides named routes for
@@ -210,6 +210,18 @@ class Router
   end
 
 
+  def self.instantiate_controller(action, opts={})
+    params = opts[:params] || nil
+    body = opts[:body] || nil
+
+    action = action.split('#')
+    params = OpenStruct.new(params) if params
+    body = OpenStruct.new(body) if body
+    obj = Kernel.const_get(action[0]).new(params, body)
+    obj.send(action[1])
+  end
+
+
   private
 
 
@@ -237,18 +249,6 @@ class Router
       path = shrink(path)
     end
     p
-  end
-
-
-  def self.instantiate_controller(action, opts={})
-    params = opts[:params] || nil
-    body = opts[:body] || nil
-
-    action = action.split('#')
-    params = OpenStruct.new(params) if params
-    body = OpenStruct.new(body) if body
-    obj = Kernel.const_get(action[0]).new(params, body)
-    obj.send(action[1])
   end
 
 
