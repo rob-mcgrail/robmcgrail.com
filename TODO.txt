@@ -1,0 +1,20 @@
+seperate response out and put it in the controller
+untangle it completely from render
+
+somehow make it so I can change bits of responses.
+
+Maybe make the response in dispatcher a bit less messy too.
+
+
+Write redirect_to
+
+
+change hard cache to view cache
+
+form helpers?
+
+models
+
+Dispatcher tests
+POST router tests
+

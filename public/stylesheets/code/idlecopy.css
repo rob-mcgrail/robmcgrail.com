@@ -1,7 +1,7 @@
 .CodeRay {
   background: #323232;
   border: 4px;
-  font-family: "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+  font-family: "Monaco", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
   padding: 3px;
   margin: 5px;
   overflow-x: auto;
@@ -16,7 +16,7 @@ of lib/encoders/html/output.rb in the vendored Coderay gem */
   color: #D2F6D8;
   margin: 0px;
   padding: 0px;
-  font-size: 14px;
+  font-size: 14.3px;
   line-height: 1.35em;
 }
 

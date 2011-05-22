@@ -7,7 +7,7 @@ module TemplateHelpers
       #add options to remove defaults?
       if args[0] == 'defaults'
         args.delete 'defaults'
-        %w(grids libraries space heading media content).each {|a| args << a}
+        %w(grids libraries space heading media content buttons).each {|a| args << a}
         args << 'code/' + SETTINGS[:coderay_css]
       end
 
