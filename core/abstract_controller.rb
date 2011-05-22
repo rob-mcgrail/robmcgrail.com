@@ -1,4 +1,5 @@
 class AbstractController
+  require 'ostruct'
 # Base controller class - all controllers inherit << AbstractController
 #
 # Controller files should all end with the suffix _controller.
@@ -35,8 +36,13 @@ class AbstractController
 #  end
 
   def initialize(p=nil, b=nil) # make this an empty class where method missing is a warning about no params?
-    @p = p
-    @b = b
+    @p = p || OpenStruct.new({})
+    @b = b || OpenStruct.new({})
+  end
+
+
+  def redirect_to(action, opts={})
+    Router.instantiate_controller action, :body => opts
   end
 
 end
