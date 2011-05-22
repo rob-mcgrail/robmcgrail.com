@@ -32,7 +32,7 @@ class Adminful < AbstractController
       DataMapper.auto_migrate!
       redirect_to 'Adminful#dashboard', :flash => 'Destructively updated database'
     else
-      redirect_to 'Adminful#dashboard', :flash => 'Failed to update database, because that\'s insane'
+      redirect_to 'Adminful#dashboard', :flash => 'Failed to rebuild database, because that\'s insane'
     end
   end
 
