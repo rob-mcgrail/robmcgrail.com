@@ -30,9 +30,9 @@ class Adminful < AbstractController
   def destructively_update_db
     if SETTINGS[:development_mode]
       DataMapper.auto_migrate!
-      redirect_to 'Adminful#dashboard', :flash => 'Updated database'
-    else
       redirect_to 'Adminful#dashboard', :flash => 'Destructively updated database'
+    else
+      redirect_to 'Adminful#dashboard', :flash => 'Failed to update database, because that\'s insane'
     end
   end
 
