@@ -11,7 +11,7 @@ SETTINGS[:hostname] = '0.0.0.0'
 SETTINGS[:ga_caode] = 'UA-10148230-1'
 
 # Secret for salting things.
-SETTINGS[:secret] = '73rd7yr879rweri34r8y7wrwery8i7dfgwr87tkjgjhfjhfjhgjhgjftrd65e76r7t87t8'
+SETTINGS[:secret] = 'change_this_to_something'
 
 # Database connection
 SETTINGS[:db] = 'sqlite://' + PATH + '/db/main'
@@ -29,7 +29,7 @@ SETTINGS[:public_folders] = ['/audio', '/files', '/images', '/javascript', '/sty
 SETTINGS[:view_folder] = '/views/'
 
 # Chose coderay stylesheet (public/stylesheets/code/) - rack, idlecopy,
-SETTINGS[:coderay_css] = 'rack'
+SETTINGS[:coderay_css] = 'idlecopy'
 
 # Maximum bytes for the template chache (caches raw haml in memory to save on disk reads)
 SETTINGS[:template_cache_max] = 1_000_000
