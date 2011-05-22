@@ -1,47 +1,47 @@
 class Adminful < AbstractController
-  R.add '/fresh_templates', 'Adminful#refresh_templates', :name => 'refresh_templates'
-  # Clears the template chache
-  def refresh_templates
-    @title = 'Cleared template caches'
-    @error = 'Cleared template caches'
-    TemplateCache.clear
-    render 'errors/generic'
+  R.add '/admin', 'Adminful#dashboard', :name => 'admin'
+  # Dashboard for admin actions
+  def dashboard
+    @title = 'Admin'
+    render 'admin/dashboard', :layout => 'layouts/main'
   end
 
 
-  R.add '/render_again', 'Adminful#clear_all_caches', :name => 'clear_caches'
+  R.add '/admin/clear_views', 'Adminful#clear_hardcache', :type => 'post'
+  # Clears the view/hard cache
+  def clear_hardcache
+    HardCache.clear
+    redirect_to 'Adminful#dashboard', :flash => 'Cleared view cache'
+  end
+
+
+  R.add '/admin/clear_templates', 'Adminful#clear_all_caches', :type => 'post'
   # Clears the template chache
   def clear_all_caches
-    @title = 'Cleared all caches'
-    @error = 'Cleared all caches'
     TemplateCache.clear
     HardCache.clear
-    render 'errors/generic'
+    redirect_to 'Adminful#dashboard', :flash => 'Cleared template and view cache'
   end
 
 
-  R.add '/destructively_update_db', 'Adminful#destructively_update_db'
+  R.add '/admin/destructively_update_db', 'Adminful#destructively_update_db', :type => 'post'
   # Wipes and updates the database
   # Only available in development mode for now
   def destructively_update_db
-    @title = 'Destructively update database'
     if SETTINGS[:development_mode]
       DataMapper.auto_migrate!
-      @error = 'Updated database'
+      redirect_to 'Adminful#dashboard', :flash => 'Updated database'
     else
-      @error = 'Can\'t destructively upate database on a production install'
+      redirect_to 'Adminful#dashboard', :flash => 'Destructively updated database'
     end
-    render 'errors/generic'
   end
 
 
-  R.add '/update_db', 'Adminful#update_db'
+  R.add '/admin/update_db', 'Adminful#update_db', :type => 'post'
   # Only available in development mode for now
   def update_db
-    @title = 'Update database'
-    @error = 'Updated database'
     DataMapper.auto_upgrade!
-    render 'errors/generic'
+    redirect_to 'Adminful#dashboard', :flash => 'Updated database'
   end
 end
 
