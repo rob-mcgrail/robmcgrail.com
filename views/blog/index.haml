@@ -1,5 +1,8 @@
 = textile @intro if @intro
+%hr
 - @posts.each do |post|
-    %h3= full_link_to post.title, post.slug_path
-    ~ textile post.body[0..4]
+    .post
+        %h3= full_link_to post.title, post.slug_path
+        ~ textile post.body
+        %p= print_tags(post, :narrow => true)
 

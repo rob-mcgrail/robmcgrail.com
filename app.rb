@@ -16,14 +16,8 @@ require 'redclothcoderay'
 
 require 'settings'
 
-
-class String
-  def parameterize
-    self.gsub(/[^a-z0-9\-_!?]+/i, '-').downcase
-  end
-end
-
-Dir['app/*.rb'].each {|file| require file }
+Dir['helpers/*.rb'].each {|file| require file }
+Dir['app/*.rb'].each     {|file| require file }
 
 DataMapper.finalize
 

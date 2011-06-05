@@ -39,6 +39,9 @@ end
 
 get '/code/?' do
   @title = title 'code'
+
+  @intro = "h2. Code\n\nThis is a blog about whatchamacallit.\n\n"
+
   @posts = BlogPost.of_category 'code'
   haml :'blog/index'
 end
@@ -55,8 +58,19 @@ end
 
 get '/tag/:tag/?' do
   @title = title params[:tag]
+  @intro = "h2. ##{params[:tag]}"
 
   @posts = BlogPost.tagged_with(params[:tag], :order => [ :created_at.desc ])
+
+  haml :'blog/index'
+end
+
+
+get '/:category/tag/:tag/?' do
+  @title = title params[:tag]
+  @intro = "h2. #{params[:category]}:##{params[:tag]}"
+
+  @posts = BlogPost.of_category(params[:category]).tagged_with(params[:tag], :order => [ :created_at.desc ])
 
   haml :'blog/index'
 end
@@ -82,7 +96,7 @@ post '/blog/new-post/?' do
   )
 
   if @post.save
-    flash[:main] = 'Post created.'
+    flash[:success] = 'Post created.'
     redirect @post.slug_path
   else
     flash[:error] = 'Failed to create post.'
@@ -113,7 +127,7 @@ post '/blog/edit/:id/?' do
   @post.updated_at = Time.now
 
   if @post.save
-    flash[:main] = 'Post updated.'
+    flash[:success] = 'Post updated.'
     redirect @post.slug_path
   else
     flash[:error] = 'Failed to update.'

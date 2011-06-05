@@ -1,6 +1,6 @@
 %h2= 'New post'
 = haml :flashes
-%form(id='edit' class='pam' method='post' action='/blog/new-post/')
+%form(id='edit' method='post' action='/blog/new-post/')
     %label
         Title
         %br
@@ -9,7 +9,7 @@
     %label
         Body
         %br
-        %textarea(name='body' class='')
+        %textarea(name='body')
     %br
     %label
         Category

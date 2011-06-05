@@ -1,7 +1,7 @@
 %article
-    %h2= @post.title
+    %h1= @post.title
     = haml :flashes
     ~ textile @post.body
-    %p= print_tags(@post)
+    %p= print_tags(@post, :narrow => true)
     %p= link_to 'Edit', @post.edit_path
 
