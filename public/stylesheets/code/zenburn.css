@@ -1,0 +1,42 @@
+.CodeRay {
+  background: #3F3F3E;
+  border: 4px;
+  font-family: "Monaco", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", monospace;
+  padding: 3px;
+  margin: 5px;
+  overflow-x: auto;
+  z-index: 1;
+}
+
+/* Important note - width of .CodeRay is controlled by line 121
+of lib/encoders/html/output.rb in the vendored Coderay gem */
+
+.CodeRay pre {
+  background: #3F3F3F;
+  color: #eee;
+  margin: 0px;
+  padding: 0px;
+  font-size: 14.3px;
+  line-height: 1.35em;
+}
+
+.CodeRay .s  { color:#ccc }     /* comment */
+.CodeRay .an { color:#77CAD3; font-style: bold; }       /* html attribute */
+.CodeRay .c  { color:#7f9f7f; font-style: italic; }     /* comment */
+.CodeRay .ch { color:#CFA18D }                            /* escaped character */
+.CodeRay .cl { color:#81B0CD; font-style: bold; }       /* class */
+.CodeRay .co { color:#81B0CD; font-style: bold; }       /* constant */
+.CodeRay .fl { color:#D4A6A2 }                            /* float */
+.CodeRay .fu { color:#EEED72 }                            /* function */
+.CodeRay .gv { color:#8484D6 }                            /* global variable */
+.CodeRay .i  { color:#60B48A }                            /* integer */
+.CodeRay .il { background:#E7E7E5 }                 /* inline code */
+.CodeRay .iv { color:#8996E6 }                      /* instance variable */
+.CodeRay .pp { color:#58ABFF }                      /* doctype */
+.CodeRay .r  { color:#FFD487; font-style: bold; }    /* keyword */
+.CodeRay .rx { color:#878DFF }                      /* regex */
+.CodeRay .s  { color:#60B48A }                      /* string */
+.CodeRay .sy { color:#60B48A }                      /* symbol */
+.CodeRay .ta { color:#58ABFF }                      /* html tag */
+.CodeRay .pc { color:#6C9CBD }                      /* boolean */
+

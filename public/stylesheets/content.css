@@ -39,11 +39,12 @@ cite{display:block; text-align:right; padding-top: 10px;}
 /* ======= rob additions ======= */
 .subtle{color:#888;font-size:12px;text-align:justify;}
 .warning{color:red;}
-.alert{color:green;}
+.message{color:green;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
 .hidden {display:none;}
 /*.tagline {font-size:16px; font-weight:normal;}*/
-#content > p {line-height: 1.6em;}
+div#main-content {min-height: 230px;}
+#main-content > p {line-height: 1.6em;}
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {font-family:Verdana,sans-serif;
 padding-bottom:.25em;margin-right:2em;letter-spacing:0px;}
 p+h1, p+h2, p+h3, p+h4, p+h5, p+h6 {padding-top:.3em;}

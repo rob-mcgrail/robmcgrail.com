@@ -1,0 +1,28 @@
+%h2= 'Edit ' + @post.title
+= haml :flashes
+%form(id='edit' class='pam' method='post' action='/blog/edit/#{@post.id}')
+    %label
+        Title / Slug
+        %br
+        %input(name='title' type='text' value='#{@post.title}' size='40')
+    %input(name='slug' type='text' value='#{@post.slug}' size='40')
+    %br
+    %label
+        Body
+        %br
+        %textarea(name='body')
+            ~ @post.body.gsub("\n","")
+    %br
+    %label
+        Category
+        %br
+        %input(name='category' type='text' value='#{@post.category}')
+    %br
+    %label
+        Tags
+        %br
+        %input(name='tags' type='text' value='#{@post.tag_collection}')
+    %br
+    %button(type='submit' class='positive')
+        Update
+

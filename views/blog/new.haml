@@ -1,0 +1,26 @@
+%h2= 'New post'
+= haml :flashes
+%form(id='edit' class='pam' method='post' action='/blog/new-post/')
+    %label
+        Title
+        %br
+        %input(name='title' type='text' size='40')
+    %br
+    %label
+        Body
+        %br
+        %textarea(name='body' class='')
+    %br
+    %label
+        Category
+        %br
+        %input(name='category' type='text')
+    %br
+    %label
+        Tags
+        %br
+        %input(name='tags' type='text')
+    %br
+    %button(type='submit' class='positive')
+        Post
+

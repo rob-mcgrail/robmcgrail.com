@@ -1,0 +1,6 @@
+require 'app.rb'
+
+puts 'Non-destructively updating database.'
+
+DataMapper.auto_upgrade!
+

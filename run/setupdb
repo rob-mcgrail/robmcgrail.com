@@ -1,0 +1,6 @@
+require 'app.rb'
+
+puts 'Destructively updating database.'
+
+DataMapper.auto_migrate!
+

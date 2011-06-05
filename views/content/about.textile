@@ -1,0 +1,84 @@
+This site is a place to dump writing and notes, and experiment with getting various things to work.
+
+h2. Where the author reflects upon rolling your own blog engine in ruby, whines about rails
+
+Despite "it being completely redundant":http://haacked.com/archive/2006/10/06/Rolling_Your_Own_Blog_Engine.aspx, rolling your own blog engine is fun as hell. The original plan was to build a site in rails. It came out ok, the same way that microwaving something comes out ok.
+
+Long story short, if you're new to coding things for the web then Rails is a terrible way to get started. And unless you've read through more or less every class you're flying stupid - whatever you're making will be heavier and more brittle than it needs to be. (Not brittle as in lacking tests and checks and handling, but the important sort of brittle - 'I want to change this completely, but if I try it'll break because I've been painting-by-google'.)
+
+And to be clear, the problem isn't magic - class_eval and method_missing aren't magic. Everyone should use those all the time. And "Array#fifth":https://github.com/rails/rails/commit/e50530ca3ab5db53ebc74314c54b62b91b932389#diff-1 _definitely_ isn't magic. The problem is a large body of code, most of which you just don't need or understand. By the time you've read it, you could have written it (the bits you want, I mean).
+
+How convincing you find all that grumbling probably depends on how much you like ruby, as opposed to just liking RoR (because you're a defecting .net dev or whatever). If you're the first one, and you want to make something for the web, consider the following:
+
+<source:ruby>
+require 'rubygems'
+require 'mongrel'
+
+class IveGotYourWebFrameworkRightHere
+    class Thing < Mongrel::HttpHandler
+        def process(request, response)
+            response.start(200) do |head, out|
+                head["Content-Type"] = "text/html"
+                out.write '<h1>HALLO!</h1>'
+            end
+        end
+    end
+
+    def self.start
+        config = Mongrel::Configurator.new :host => '0.0.0.0', :port => '8000' do
+            listener do
+                uri "/some-thing",  :handler => Thing.new
+            end
+
+            trap("INT") { stop }
+            run
+        end
+        config.join
+    end
+end
+
+</source>
+
+That's not much of an app, but that's *all* the code there is (aside from "mongrel":http://rubydoc.info/gems/mongrel/1.1.5/frames). It threads properly. It runs on <10MB of RAM. And deploying it? Well that's all there is to it - just "point something":http://wiki.nginx.org/HttpProxyModule#proxy_pass at the "ports or sockets":http://wiki.nginx.org/HttpUpstreamModule.
+
+Want it server agnostic, with a hilarious proto-router?
+
+<source:ruby>
+
+require 'otherfile'
+# rackup -s server -p port thisfile.ru
+class IveGotYourWebFrameworkRightHere
+    def call(env)
+        Router.connect Rack::Request.new(env)
+    end
+end
+
+class Router
+    @@routes = {}
+    class << self
+        def add(path, action)
+            @@routes[path] = action
+        end
+
+        def connect(env)
+            controller = @@routes[env.path].split('#')
+            obj = Kernel.const_get(controller[0]).new
+            ['200', {"Content-Type" => "text/html"}, obj.send(controller[1])]
+        end
+    end
+end
+
+# Example controller with route:
+class Thing
+    Router.add '/some-thing', 'Thing#show'
+        def show
+        '<h1>HALLO!</h1>'
+    end
+end
+
+</source>
+
+Now obviously you're not going to do it like that. But you could. And for a personal project, or a quick app, something along those lines is a hell of a lot more fun than trudging through rails.
+
+Add param awareness to the router, plug in an ORM (and yeah, you probably do want to use ActiveRecord for that...), write a quick renderer for a "templating language":http://ruby-toolbox.com/categories/template_languages.html, and you have a framework that you know inside out. Or just use "merb":http://www.merbivore.com/. I can't run your whole fucking life.
+

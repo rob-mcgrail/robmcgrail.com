@@ -1,0 +1,16 @@
+:javascript
+    #{show_hide('.stalking', '.stalk')}
+%ul.nav
+    %li= full_link_to('Home', '/')
+
+%hr
+%ul.nav
+    %li= link_to('Stalk', '#', :class => 'stalk')
+%div(class='stalking' style='display: none;')
+    %ul.nav
+        %li.external= link_to('boxee', 'http://www.boxee.tv/go/robomc/')
+        %li.external= link_to('fb', 'http://www.facebook.com/robomc')
+        %li.external= link_to('github', 'http://github.com/robomc')
+        %li.external= link_to('last.fm', 'http://www.last.fm/user/robomc')
+        %li.external= link_to('youtube', 'http://www.youtube.com/user/robbo9942')
+
