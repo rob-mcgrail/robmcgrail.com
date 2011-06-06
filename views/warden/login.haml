@@ -1,0 +1,16 @@
+%h2= 'Log in'
+= haml :flashes
+%form(id='login' method='post' action='/login/')
+    %label
+        Username
+        %br
+        %input(name='username' type='text')
+        %br
+    %label
+        Password
+        %br
+        %input(name='password' type='password')
+    %br
+    %button(type='submit')
+        Login
+

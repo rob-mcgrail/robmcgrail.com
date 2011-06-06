@@ -29,6 +29,7 @@ end
 ###############
 
 get '/blog/?' do
+  authorize!
   @title = title 'blog'
 
   @posts = BlogPost.all(:order => [ :created_at.desc ])
@@ -80,12 +81,14 @@ end
 #################
 
 get '/blog/new-post/?' do
+  authorize!
   @title = title 'new blog post'
   haml :'blog/new'
 end
 
 
 post '/blog/new-post/?' do
+  authorize!
   @post = BlogPost.new(
     :title => params[:title],
     :slug => params[:title].parameterize,
@@ -109,6 +112,7 @@ end
 ###############
 
 get '/blog/edit/:id/?' do
+  authorize!
   @post = BlogPost.get(params[:id])
 
   @title = title 'edit ' + @post.title
@@ -118,6 +122,7 @@ end
 
 
 post '/blog/edit/:id/?' do
+  authorize!
   @post = BlogPost.get(params[:id])
   @post.title = params[:title]
   @post.slug = params[:slug]
