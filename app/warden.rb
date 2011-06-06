@@ -9,7 +9,7 @@ class User
     if user.nil?
       return nil
     else
-      if user.password.make_matchable == p
+      if user.password == p #.make_matchable
         return user
       else
         return nil
@@ -39,7 +39,7 @@ Warden::Strategies.add(:password) do
     unless user.nil?
       success!(user)
     else
-      fail!("Invalid username or password")
+      fail!
     end
   end
 end
@@ -55,7 +55,7 @@ end
 helpers do
   def authorize!(failure_path=nil)
     unless env['warden'].authenticated?
-#    session[:return_to] = request.path if options.auth_use_referrer
+      flash[:error] = 'You can\'t see that'
       redirect failure_path || '/unauthenticated'
     end
   end
@@ -64,7 +64,7 @@ end
 
 get '/unauthenticated/?' do
   status 401
-  flash[:error] = 'You can\'t see this'
+  flash[:error] = 'You can\'t see that'
   redirect '/login'
 end
 

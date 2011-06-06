@@ -3,5 +3,5 @@ require 'app.rb'
 puts 'Creating user'
 
 User.first_or_create(:username => 'rob',
-                     :password => 'diam32y8mqti'.to_hash)
+                     :password => 'diam32y8mqti') #.to_hash
 

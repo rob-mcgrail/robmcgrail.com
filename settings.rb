@@ -1,4 +1,4 @@
-configure do
+configure :development do
   set :db, 'sqlite3://' + settings.root + '/db/development.sqlite3'
   set :show_exceptions, true
   set :static, false
@@ -6,6 +6,13 @@ configure do
   set :highlighting, 'rack'
 end
 
+configure :production do
+  set :db, 'sqlite3://' + settings.root + '/db/production.sqlite3'
+  set :show_exceptions, false
+  set :static, false
+  set :sessions, true
+  set :highlighting, 'rack'
+end
 
 # Database
 
