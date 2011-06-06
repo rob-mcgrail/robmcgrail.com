@@ -2,7 +2,10 @@
     #{show_hide('.stalking', '.stalk')}
 %ul.nav
     %li= full_link_to('Home', '/')
-
+    - if env['warden'].authenticated?
+        %li= full_link_to('Logout', '/logout')
+    - unless env['warden'].authenticated?
+        %li= full_link_to('Login', '/login')
 %hr.nav
 %ul.nav
     %li= link_to('Stalk', '#', :class => 'stalk')

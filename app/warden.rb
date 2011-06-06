@@ -81,8 +81,16 @@ get '/login/?' do
 end
 
 
+get '/logout/?' do
+  authorize!
+  env['warden'].logout
+  flash[:success] = 'Logged out'
+  redirect '/'
+end
+
+
 post '/login/?' do
-  request.env['warden'].authenticate!(:password)
+  env['warden'].authenticate!(:password)
   flash[:success] = 'Logged in'
   redirect '/'
 end

@@ -8,14 +8,14 @@
         /[if lte IE 8]
             = javascript_script_tag '/js/html5.js'
     %body#page
-        = haml @header || :header
         %div(class='column unitx5 first' id='main-content')
-            = yield if block_given?
+            = haml @header || :header
+            %div
+                = yield if block_given?
+            %footer.line
+                %div
+                    %small.subtle
+                        ~ textile @footer || :'content/footer'
         %nav(class='column unitx2')
             = haml @nav || :nav
-
-        %footer.line
-            %div(class='column unitx5 first')
-                %small.subtle
-                    ~ textile @footer || :'content/footer'
 
