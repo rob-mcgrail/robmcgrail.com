@@ -4,8 +4,10 @@
     %li= full_link_to('Home', '/')
     - if env['warden'].authenticated?
         %li= full_link_to('Logout', '/logout')
+        %li= full_link_to('New post', '/blog/new-post')
     - unless env['warden'].authenticated?
         %li= full_link_to('Login', '/login')
+    %li= full_link_to('Code', '/code')
 %hr.nav
 %ul.nav
     %li= link_to('Stalk', '#', :class => 'stalk')

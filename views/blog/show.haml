@@ -3,5 +3,6 @@
     = haml :flashes
     ~ textile @post.body
     %p= print_tags(@post, :narrow => true)
-    %p= link_to 'Edit', @post.edit_path
+    - if env['warden'].authenticated?
+        %p= link_to 'Edit', @post.edit_path
 
