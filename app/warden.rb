@@ -6,17 +6,18 @@ class User
 
   def self.authenticate(u,p)
     user = first(:username => u)
-    if u.password.make_matchable == p
-      return user
-    else
+    if user.nil?
       return nil
+    else
+      if user.password.make_matchable == p
+        return user
+      else
+        return nil
+      end
     end
   end
-
 end
 
-user = User.first_or_create(:username => 'rob',
-                            :password => 'diam32y8mqti'.to_hash)
 
 Warden::Strategies.add(:password) do
   # Find out why params hash doesn't work
@@ -33,11 +34,9 @@ Warden::Strategies.add(:password) do
   end
 
   def authenticate!
-    puts 'in authenticate:'
-
     user = User.authenticate(username,password)
     # Tighten this up
-    unless u.nil?
+    unless user.nil?
       success!(user)
     else
       fail!("Invalid username or password")
@@ -72,6 +71,7 @@ end
 
 post '/unauthenticated/?' do
   status 401
+  flash[:error] = 'Wrong username and password'
   redirect '/login'
 end
 
