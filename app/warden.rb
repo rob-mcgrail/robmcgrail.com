@@ -9,7 +9,7 @@ class User
     if user.nil?
       return nil
     else
-      if user.password == p #.make_matchable
+      if user.password.make_matchable == p
         return user
       else
         return nil
