@@ -3,7 +3,8 @@ configure :development do
   set :show_exceptions, true
   set :static, false
   set :sessions, true
-  set :highlighting, 'rack'
+  set :highlighting, 'zenburn'
+	set :raise_errors, true
 end
 
 configure :production do
@@ -12,10 +13,10 @@ configure :production do
   set :static, false
   set :sessions, true
   set :highlighting, 'rack'
+	set :raise_errors, false
 end
 
 # Database
-
 DataMapper::Logger.new($stdout, :info) if settings.development?
 
 DataMapper.setup(:default, settings.db)
