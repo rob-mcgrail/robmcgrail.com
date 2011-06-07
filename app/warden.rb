@@ -30,11 +30,11 @@ Warden::Strategies.add(:password) do
   end
 
   def valid?
-    username || password
+    params['username'] || params['password']
   end
 
   def authenticate!
-    user = User.authenticate(username,password)
+    user = User.authenticate(params['username'], params['password'])
     # Tighten this up
     unless user.nil?
       success!(user)
@@ -90,6 +90,8 @@ end
 
 
 post '/login/?' do
+	puts 'handler:'
+	puts params[:password]
   env['warden'].authenticate!(:password)
   flash[:success] = 'Logged in'
   redirect '/'
