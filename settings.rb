@@ -1,3 +1,4 @@
+#<khaase> spidermonk: set :session_secret, "something something"
 configure :development do
   set :db, 'sqlite3://' + settings.root + '/db/development.sqlite3'
 	set :raise_errors, true

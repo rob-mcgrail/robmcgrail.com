@@ -20,5 +20,9 @@ helpers do
     str.slice!(-2..-1)
     str
   end
+
+#  def delete_link(name, url, opts={})
+#  "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
+#  end
 end
 

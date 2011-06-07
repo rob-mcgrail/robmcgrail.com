@@ -2,9 +2,9 @@ class BlogPost
   include DataMapper::Resource
 
   property :id,         Serial # primary serial key
-  property :title,      String,  :required => true,  :length => 32
-  property :slug,       String,  :required => true,  :length => 32
-  property :body,       Text,     :required => true,  :length => 10000
+  property :title,      String,  :required => true,  :length => 100
+  property :slug,       String,  :required => true,  :length => 100
+  property :body,       Text,     :required => true,  :length => 100000
   property :category,   String,  :required => true,  :length => 10, :lazy => false
   property :created_at, DateTime,:required => true
   property :updated_at, DateTime
@@ -22,6 +22,10 @@ class BlogPost
   def edit_path
     '/blog/edit/' + self.id.to_s
   end
+
+  def delete_path
+    '/blog/delete/' + self.id.to_s
+  end
 end
 
 ###############
@@ -37,15 +41,17 @@ get '/blog/?' do
   haml :'blog/index'
 end
 
+###### Code
 
 get '/code/?' do
   @title = title 'code'
 
-  @intro = "h2. Code\n\nThis is a blog about whatchamacallit.\n\n"
+  @intro = "h2. Code\n\nFull of bad advice and things that don't work.\n\n"
 
   @posts = BlogPost.of_category 'code'
   haml :'blog/index'
 end
+
 
 
 get '/code/:slug/?' do
@@ -55,6 +61,50 @@ get '/code/:slug/?' do
 
   haml :'blog/show'
 end
+
+###### USA
+
+get '/usa/?' do
+  @title = title 'usa'
+
+  @intro = "h2. usa\n\nAbout that thing.\n\n"
+
+  @posts = BlogPost.of_category 'usa'
+  haml :'blog/index'
+end
+
+
+get '/usa/:slug/?' do
+  @title = title 'usa'
+
+  @post = BlogPost.of_category('usa').first(:slug => params[:slug])
+
+  haml :'blog/show'
+end
+
+###### Things
+
+get '/things/?' do
+  @title = title 'things'
+
+  @intro = "h2. Things\n\n...\n\n"
+
+  @posts = BlogPost.of_category 'things'
+  haml :'blog/index'
+end
+
+
+
+get '/things/:slug/?' do
+  @title = title 'things'
+
+  @post = BlogPost.of_category('things').first(:slug => params[:slug])
+
+  haml :'blog/show'
+end
+
+
+####### Tags
 
 
 get '/tag/:tag/?' do
@@ -137,6 +187,25 @@ post '/blog/edit/:id/?' do
   else
     flash[:error] = 'Failed to update.'
     redirect "blog/edit/#{@post.id}"
+  end
+end
+
+###############
+# Delete      #
+###############
+
+post '/blog/delete/:id/?' do
+  authorize!
+  @post = BlogPost.get(params[:id])
+
+  cat = @post.category
+
+  if @post.destroy
+    flash[:success] = 'Post deleted.'
+    redirect "/#{cat}"
+  else
+    flash[:error] = 'Failed to delete.'
+    redirect @post.slug_path
   end
 end
 
