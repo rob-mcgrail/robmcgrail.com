@@ -20,14 +20,6 @@ end
 
 
 Warden::Strategies.add(:password) do
-  # Find out why params hash doesn't work
-  def username
-    env["rack.request.query_hash"]["username"]
-  end
-
-  def password
-    env["rack.request.query_hash"]["password"]
-  end
 
   def valid?
     params['username'] || params['password']
@@ -90,8 +82,6 @@ end
 
 
 post '/login/?' do
-	puts 'handler:'
-	puts params[:password]
   env['warden'].authenticate!(:password)
   flash[:success] = 'Logged in'
   redirect '/'

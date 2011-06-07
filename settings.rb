@@ -4,7 +4,7 @@ configure :development do
   set :show_exceptions, true
   set :static, false
   set :sessions, true
-  set :highlighting, 'zenburn'
+  set :highlighting, 'rack'
 end
 
 configure :production do
