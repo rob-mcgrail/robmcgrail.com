@@ -15,6 +15,7 @@ require 'haml'
 require 'coderay'
 require 'haml-coderay'
 require 'redclothcoderay'
+require 'nokogiri'
 
 require 'settings'
 
