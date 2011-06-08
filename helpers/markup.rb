@@ -25,6 +25,8 @@ helpers do
 #  "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
 #  end
 
+
+
   #http://benjaminthomas.org/2009-01-30/smart-html-truncate.html
   def html_truncate(input, num_words = 15, truncate_string = " ...")
     doc = Nokogiri::HTML(input)
@@ -69,24 +71,6 @@ helpers do
   if count >= num_words
     unless count == num_words
       new_content = current.text.split
-
-      # If we're here, the last text node we counted eclipsed the number of words
-      # that we want, so we need to cut down on words. The easiest way to think about
-      # this is that without this node we'd have fewer words than the limit, so all
-      # the previous words plus a limited number of words from this node are needed.
-      # We simply need to figure out how many words are needed and grab that many.
-      # Then we need to -subtract- an index, because the first word would be index zero.
-
-      # For example, given:
-      # <p>Testing this HTML truncater.</p><p>To see if its working.</p>
-      # Let's say I want 6 words. The correct returned string would be:
-      # <p>Testing this HTML truncater.</p><p>To see...</p>
-      # All the words in both paragraphs = 9
-      # The last paragraph is the one that breaks the limit. How many words would we
-      # have without it? 4. But we want up to 6, so we might as well get that many.
-      # 6 - 4 = 2, so we get 2 words from this node, but words #1-2 are indices #0-1, so
-      # we subtract 1. If this gives us -1, we want nothing from this node. So go back to
-      # the previous node instead.
       index = num_words-(count-new_content.length)-1
       if index >= 0
         new_content = new_content[0..index]
@@ -106,9 +90,6 @@ helpers do
     end
   end
 
-    # now we grab the html and not the text.
-    # we do first because nokogiri adds html and body tags
-    # which we don't want
     doc.root.children.first.inner_html
   end
 end

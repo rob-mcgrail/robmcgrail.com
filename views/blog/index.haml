@@ -4,6 +4,6 @@
 - @posts.each do |post|
     .post
         %h3= full_link_to post.title, post.slug_path
-        ~ textile(html_truncate(post.body, 200))
+        ~ html_truncate(textile(post.body), 200, " ...")
         %p= print_tags(post, :narrow => true)
 
