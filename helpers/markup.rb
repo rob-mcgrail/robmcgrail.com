@@ -25,8 +25,8 @@ helpers do
 #  "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
 #  end
 
+  #http://benjaminthomas.org/2009-01-30/smart-html-truncate.html
   def html_truncate(input, num_words = 15, truncate_string = " ...")
-    #http://benjaminthomas.org/2009-01-30/smart-html-truncate.html
     doc = Nokogiri::HTML(input)
 
     current = doc.children.first
