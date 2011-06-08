@@ -1,4 +1,3 @@
-#<khaase> spidermonk: set :session_secret, "something something"
 configure :development do
   set :db, 'sqlite3://' + settings.root + '/db/development.sqlite3'
 	set :raise_errors, true
@@ -6,6 +5,7 @@ configure :development do
   set :static, false
   set :sessions, true
   set :highlighting, 'rack'
+  set :session_secret, "Ns7uwEYgHlvYp9-!.:R%*s{=#4}05J|'!*?YS[Ah7dn_SWa'.?(yMJ&.EzOskg"
 end
 
 configure :production do
@@ -15,6 +15,7 @@ configure :production do
   set :static, false
   set :sessions, true
   set :highlighting, 'rack'
+  set :session_secret, "Ns7uwEYgHlvYp9-!.:R%*s{=#4}05J|'!*?YS[Ah7dn_SWa'.?(yMJ&.EzOskg"
 end
 
 # Database
