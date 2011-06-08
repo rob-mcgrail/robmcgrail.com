@@ -10,7 +10,7 @@
     %label
         Body
         %br
-        %textarea(name='body')
+        %textarea(name='body' cols='60' rows='30')
             ~ @post.body.gsub("\n","")
     %br
     %label
