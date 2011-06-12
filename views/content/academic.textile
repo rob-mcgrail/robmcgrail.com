@@ -1,0 +1,32 @@
+h2(smaller). Published papers
+
+h3(article-title). "Working with Substance: Actor-Network Theory and the Modal Weight of the Material":http://scholar.lib.vt.edu/ejournals/SPT/v12n1/mcgrail.html
+
+Examination of industrial engineers' use of physical models in the design process.
+
+Examples from prototyping and materials testing work are used to crticise strongly 'relational' interpretations of actor-network theory. An overly enthusiastic focus on the relational/emergent aspects of objects in ANT seems committed to defining them _completely_ by their external inputs (or, in more contrived/advanced formulations, attempts to frame the distinction between internal and external as an outcome of the investigatory process itself).
+
+This fails to account for the capacity of objects and materials to operate 'on their own terms' - to suprise, fail, resist applications, and generally bound what is possible.
+
+For people who'd rather read about possible-worlds theory and Heidegger than just try hitting a rock against a bottle, further explanation is provided.
+
+h3(article-title). "Risky Maps for Contested Territories":http://www.ipp.org.nz/essudocs/sociology/NZS202.pdf
+
+Review essay triggered by the publication of Latour's _"Reassembling the social":http://www.amazon.com/Reassembling-Social-Introduction-Actor-Network-Theory-Management/dp/0199256047_.
+
+Focuses criticism on Latour's atempts at avoiding (some narrowly defined version of) explanation. Descriptive accounts of the sort Latour advocates for remain explanatory in his sense - the inclusion of entities ultimately being a judgment on their causal relevance to the state or event under description. However, the types of explanations that Latour is rallying against remain problematic, particularly in the social sciences.
+
+Rich, valid accounts should operate more like maps - completely empirical, but drawn at a carefully contrived grain appropriate to their purpose.
+
+h3(article-title). "Review: Technology and social power":http://the.sagepub.com/content/101/1/130", "Thesis 11":http://the.sagepub.com/ " 101, 1-2
+
+Review of "Technology of social power":http://www.palgrave.com/products/title.aspx?PID=270463. I can't remember what I said, because it's behind a pay-wall. (US$25.00 for one day - bargain.)
+
+Can't have been too bad, because they pulled a quote for the jacket blurb.
+
+h2(smaller). Other things
+
+h3(article-title). "Journalflood":http://journalflood.blogspot.com/
+
+Short lived, long defunct blog that attempted to provide a synopsis for every peer reviewed article from every issue of every decent or novel english-language social science journal in the world. Possibly a bit ambitious for a first blog.
+
