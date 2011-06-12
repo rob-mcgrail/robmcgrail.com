@@ -10,3 +10,9 @@ get '/about/?' do
   haml :main
 end
 
+get '/academic/?' do
+  @title = title 'academic'
+  @content = :'content/academic'
+  haml :main
+end
+
