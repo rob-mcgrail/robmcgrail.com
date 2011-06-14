@@ -38,7 +38,7 @@ cite{display:block; text-align:right; padding-top: 10px;}
 /* ======= rob additions ======= */
 .subtle{color:#888;font-size:12px;text-align:justify;}
 .warning{color:red;}
-.flashes{padding-left:10px; padding-bottom:10px;}
+.flashes{padding-left:10px;}
 hr.nav{margin-left:10px;}
 .message{color:green;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
