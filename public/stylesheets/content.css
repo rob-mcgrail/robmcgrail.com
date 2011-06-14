@@ -56,6 +56,7 @@ p > a, p > a:visited, h1 > a, h1 > a:visited, h2 > a, h2 > a:visited, h3 > a, h3
 p > a:focus, p > a:hover, h1 > a:focus, h1 > a:hover, h2 > a:focus, h2 > a:hover, h3 > a:focus, h3 > a:hover {color: #555; background:#eee; text-decoration: underline;}
 /* accents */
 .tag, .tagline {background-color:#FFF69A}
+blockquote {padding-left:1.5em;}
 /* ====== Headings ====== */
 /* .h1-.h6 classes should be used to maintain the semantically appropriate heading levels - NOT for use on non-headings */
 h1, .h1{font-size:186%; font-weight:bold; font-style: normal;}

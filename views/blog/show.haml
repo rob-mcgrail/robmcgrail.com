@@ -4,5 +4,6 @@
     ~ textile @post.body
     %p= print_tags(@post, :narrow => true)
     - if env['warden'].authenticated?
-        %p= full_link_to('Edit', @post.edit_path) + ' | ' + "<form name='delete' method='POST' action='#{@post.delete_path}'><a href='javascript:document.delete.submit()'>Click Me</a></form>"
+        %p= full_link_to('Edit', @post.edit_path)
+        %p= "<form name='delete' method='POST' action='#{@post.delete_path}'><a href='javascript:document.delete.submit()'>Delete</a></form>"
 
