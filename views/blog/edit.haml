@@ -1,5 +1,4 @@
 %h2= 'Edit ' + @post.title
-= haml :flashes
 %form(id='edit' method='post' action='/blog/edit/#{@post.id}')
     %label
         Title / Slug

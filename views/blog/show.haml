@@ -1,6 +1,5 @@
 %article
     %h1= @post.title
-    = haml :flashes
     ~ textile @post.body
     %p= print_tags(@post, :narrow => true)
     - if env['warden'].authenticated?
