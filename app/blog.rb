@@ -67,7 +67,7 @@ end
 get '/usa/?' do
   @title = title 'usa'
 
-  @intro = "h2. usa\n\nAbout that thing.\n\n"
+  @intro = "h2. usa\n\n"
 
   @posts = BlogPost.of_category 'usa'
   haml :'blog/index'
