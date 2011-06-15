@@ -16,3 +16,7 @@ get '/academic/?' do
   haml :main
 end
 
+get '/mu-1234-cafe-5678-babe' do
+  '42'
+end
+

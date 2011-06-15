@@ -37,8 +37,8 @@ cite{display:block; text-align:right; padding-top: 10px;}
 .icon{margin-right: 5px;}
 /* ======= rob additions ======= */
 .subtle{color:#888;font-size:12px;text-align:justify;}
-.warning{color:red;}
-.flashes{padding-left:10px;}
+.warning{color:orange;}
+.flashes{background-color:white;}
 hr.nav{margin-left:10px;}
 .message{color:green;}
 .nav > li{padding-left:10px;padding-bottom:3px;}
@@ -51,7 +51,6 @@ header,section{padding-bottom:0px}
 h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {font-family:Verdana,sans-serif;
 padding-bottom:.25em;margin-right:2em;letter-spacing:0px;color:#444;line-height:1.2em;}
 p{padding-top:0.5em;}
-.message, .warning {padding-top:0px;}
 p+h1, p+h2, p+h3, p+h4, p+h5, p+h6 {padding-top:.3em;}
 p > a, p > a:visited, h1 > a, h1 > a:visited, h2 > a, h2 > a:visited, h3 > a, h3 > a:visited {color: #444; text-decoration: underline;}
 p > a:focus, p > a:hover, h1 > a:focus, h1 > a:hover, h2 > a:focus, h2 > a:hover, h3 > a:focus, h3 > a:hover {color: #555; background:#eee; text-decoration: underline;}

@@ -194,7 +194,7 @@ end
 # Delete      #
 ###############
 
-post '/blog/delete/:id/?' do
+delete '/blog/:id/?' do
   authorize!
   @post = BlogPost.get(params[:id])
 
