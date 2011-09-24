@@ -37,19 +37,19 @@ class BlogPost
     end
   end
   
-#  def to_solr
-#    post_to_solr(self.to_xml)
-#  end
+  def to_solr
+    SolrHelpers.update(self.to_xml)
+  end
   
   def to_xml
     SolrHelpers.xml self, {:id => 'id',
-                    :title => 'title',
-                    :slug => 'slug',
-                    :body => 'body',
-                    :category => 'category',
-                    :keywords => 'tags_csv',
-                    :created_at => 'created_at',
-                    :updated_at => 'updated_at'}
+                            :title => 'title',
+                            :slug => 'slug',
+                            :body => 'body',
+                            :category => 'category',
+                            :keywords => 'tags_csv',
+                            :created_at => 'created_at',
+                            :updated_at => 'updated_at'}
   end
 end
 
@@ -74,6 +74,7 @@ get '/code/?' do
   @intro = "h2. Code\n\nFull of bad advice and things that don't work.\n\n"
 
   @posts = BlogPost.of_category 'code'
+  
   haml :'blog/index'
 end
 
@@ -83,7 +84,8 @@ get '/code/:slug/?' do
   @title = title 'code'
 
   @post = BlogPost.of_category('code').first(:slug => params[:slug])
-  puts @post.to_xml
+
+  @post.to_solr
 
   haml :'blog/show'
 end
