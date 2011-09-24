@@ -9,7 +9,7 @@ require 'app'
 if settings.development?
   use Rack::Static, :urls => ["/stylesheets", "/js", "/images", "robots.txt"], :root => "public"
 end
-s
+
 use Warden::Manager do |mgmt|
   mgmt.default_strategies :password
   mgmt.failure_app = Sinatra::Application
