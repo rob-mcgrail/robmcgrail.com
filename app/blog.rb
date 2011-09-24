@@ -1,5 +1,7 @@
 class BlogPost
   include DataMapper::Resource
+  include SolrHelpers
+  #include Solrable
 
   property :id,         Serial # primary serial key
   property :title,      String,  :required => true,  :length => 100
@@ -25,6 +27,29 @@ class BlogPost
 
   def delete_path
     '/blog/delete/' + self.id.to_s
+  end
+  
+  def tags_csv
+    a = self.tags
+    a.inject('') do |sum, n|
+      sum += ', ' unless sum == ''
+      sum + n.name
+    end
+  end
+  
+#  def to_solr
+#    post_to_solr(self.to_xml)
+#  end
+  
+  def to_xml
+    SolrHelpers.xml self, {:id => 'id',
+                    :title => 'title',
+                    :slug => 'slug',
+                    :body => 'body',
+                    :category => 'category',
+                    :keywords => 'tags_csv',
+                    :created_at => 'created_at',
+                    :updated_at => 'updated_at'}
   end
 end
 
@@ -58,6 +83,7 @@ get '/code/:slug/?' do
   @title = title 'code'
 
   @post = BlogPost.of_category('code').first(:slug => params[:slug])
+  puts @post.to_xml
 
   haml :'blog/show'
 end
