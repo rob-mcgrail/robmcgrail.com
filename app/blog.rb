@@ -1,7 +1,6 @@
 class BlogPost
   include DataMapper::Resource
   include SolrHelpers
-  #include Solrable
 
   property :id,         Serial # primary serial key
   property :title,      String,  :required => true,  :length => 100
