@@ -4,12 +4,11 @@ class String
   end
 
   def to_hash
-      BCrypt::Password.create(self)
+    BCrypt::Password.create(self)
   end
 
   def make_matchable
     BCrypt::Password.new(self)
   end
-
 end
 
