@@ -1,6 +1,5 @@
 require 'rest_client'
 require 'nokogiri'
-require 'date'
 
 module SolrHelpers
 

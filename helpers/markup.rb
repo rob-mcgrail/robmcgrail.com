@@ -21,9 +21,9 @@ helpers do
     str
   end
 
-#  def delete_link(name, url, opts={})
-#  "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
-#  end
+  def delete_link(name, url, opts={})
+  "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
+  end
 
 
 
