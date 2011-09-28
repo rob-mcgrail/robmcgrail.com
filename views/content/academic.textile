@@ -10,7 +10,7 @@ This fails to account for the capacity of objects and materials to operate 'on t
 
 For people who'd rather read about possible-worlds theory and Heidegger than just try hitting a rock against a bottle, further explanation is provided.
 
-h3(article-title). "Risky Maps for Contested Territories":http://www.ipp.org.nz/essudocs/sociology/NZS202.pdf
+h3(article-title). "Risky Maps for Contested Territories":http://direct.bl.uk/bld/PlaceOrder.do?UIN=183066740&ETOC=RN
 
 Review essay triggered by the publication of Latour's _"Reassembling the social":http://www.amazon.com/Reassembling-Social-Introduction-Actor-Network-Theory-Management/dp/0199256047_.
 
