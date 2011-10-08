@@ -6,7 +6,7 @@ img{display:block;}
 em{font-style: italic;}
 strong{font-weight:bold;}
 hr{border: 1px dotted #444; border-width: 0 0 1px 0; margin: 10px 10px 10px 0px;}
-code{color:#0B8C8F;}
+code{color:#ddd; background-color:#333;font-size:14px;}
 
 .important a{font-weight:bold;}
 /* links */
