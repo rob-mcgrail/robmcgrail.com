@@ -34,4 +34,3 @@ Dir['helpers/*.rb'].each {|file| require file }
 Dir['app/*.rb'].each     {|file| require file }
 
 DataMapper.finalize
-

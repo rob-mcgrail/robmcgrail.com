@@ -3,7 +3,7 @@ require 'nokogiri'
 
 module SolrHelpers
 
-  def self.xml(o, h)
+  def self.serialise_to_xml(o, h)
     record = Nokogiri::XML::Builder.new do |xml|
       xml.add(:allowDups => 'false') {
         xml.doc_ {
@@ -22,9 +22,15 @@ module SolrHelpers
     record.to_xml
   end
   
+  def self.solr_delete
+    delete_reference = "<delete><id>#{o.id}</id></delete>"
+    self.solr_update(delete_reference)
+  end
   
-  def self.update(record, uri='http://0.0.0.0:8983/solr/update')
+  
+  def self.solr_update(record, uri='http://0.0.0.0:8983/solr/update')
     RestClient.post uri, record, :content_type => 'text/xml; charset=utf-8'
   end
+  
 end
 

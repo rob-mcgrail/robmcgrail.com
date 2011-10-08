@@ -1,6 +1,5 @@
 class BlogPost
   include DataMapper::Resource
-  include SolrHelpers
 
   property :id,         Serial # primary serial key
   property :title,      String,  :required => true,  :length => 100
@@ -37,11 +36,15 @@ class BlogPost
   end
   
   def to_solr
-    SolrHelpers.update(self.to_xml)
+    SolrHelpers.solr_update(self.to_xml)
+  end
+  
+  def delete_from_solr
+    SolrHelpers.solr_delete(self)
   end
   
   def to_xml
-    SolrHelpers.xml self, {:id => 'id',
+    SolrHelpers.serialise_to_xml self, {:id => 'id',
                             :title => 'title',
                             :slug => 'slug',
                             :body => 'body',
@@ -83,8 +86,6 @@ get '/code/:slug/?' do
   @title = title 'code'
 
   @post = BlogPost.of_category('code').first(:slug => params[:slug])
-
-  @post.to_solr
 
   haml :'blog/show'
 end
@@ -176,6 +177,7 @@ post '/blog/new-post/?' do
   )
 
   if @post.save
+    @post.to_solr
     flash[:success] = 'Post created.'
     redirect @post.slug_path
   else
@@ -209,6 +211,7 @@ post '/blog/edit/:id/?' do
   @post.updated_at = Time.now
 
   if @post.save
+    @post.to_solr
     flash[:success] = 'Post updated.'
     redirect @post.slug_path
   else
@@ -228,6 +231,7 @@ delete '/blog/:id/?' do
   cat = @post.category
 
   if @post.destroy
+    @post.delete_from_solr
     flash[:success] = 'Post deleted.'
     redirect "/#{cat}"
   else

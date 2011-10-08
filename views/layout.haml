@@ -7,7 +7,7 @@
         = javascript_script_tag '/js/jquery-1.5.1.min.js'
         /[if lte IE 8]
             = javascript_script_tag '/js/html5.js'
-    %body#page
+    %body(id='page' style='background-image:url("#{settings.background}");background-repeat:repeat;')
         %div(class='column unitx5 first' id='main-content')
             = haml :flashes
             = haml @header || :header

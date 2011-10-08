@@ -5,6 +5,7 @@
     - if env['warden'].authenticated?
         %li= full_link_to('logout', '/logout')
         %li= full_link_to('new post', '/blog/new-post')
+        %li= full_link_to('background', '/background')
     - unless env['warden'].authenticated?
         %li= full_link_to('login', '/login')
     %li= full_link_to('code', '/code')
@@ -12,7 +13,8 @@
     %li= full_link_to('things', '/things')
 %hr.nav
 %ul.nav
-    %li= link_to('stalk', '#', :class => 'stalk')
+    %li
+        <a href="#stalk" class="stalk">stalk</a>
 %div(class='stalking' style='display: none;')
     %ul.nav
         %li.external= link_to('boxee', 'http://www.boxee.tv/go/robomc/')
