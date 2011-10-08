@@ -3,24 +3,24 @@
     %label
         Title / Slug
         %br
-        %input(name='title' type='text' value='#{@post.title}' size='40' title='Title')
-    %input(name='slug' type='text' value='#{@post.slug}' size='40' title='slug-is-this-one')
+        %input(name='title' type='text' value='#{@post.title}' size='40')
+    %input(name='slug' type='text' value='#{@post.slug}' size='40')
     %br
     %label
         Body
         %br
-        %textarea(name='body' cols='55' rows='30' title='Hmmm...')
+        %textarea(name='body' cols='55' rows='30')
             ~ @post.body.gsub("\n","")
     %br
     %label
         Category
         %br
-        %input(name='category' type='text' value='#{@post.category}' title='category')
+        %input(name='category' type='text' value='#{@post.category}')
     %br
     %label
         Tags
         %br
-        %input(name='tags' type='text' value='#{@post.tag_collection}' title='tag, tag, tag')
+        %input(name='tags' type='text' value='#{@post.tag_collection}')
     %br
     %button(type='submit')
         Update
