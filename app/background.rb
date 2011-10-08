@@ -15,5 +15,11 @@ post '/background/?' do
     flash[:error] = 'Something was wrong with that'
     redirect 'background'
   end
-  haml :'background/change'
+end
+
+get '/background/reset/?' do
+  @title = title 'background reset'
+  settings.background = 'http://catlovers.todayblogpost.com/wp-content/uploads/2011/01/wpid-ScottishFoldHistory21.jpg'
+  flash[:error] = 'Background reset'
+  redirect '/'
 end
