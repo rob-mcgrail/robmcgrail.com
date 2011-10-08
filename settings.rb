@@ -4,7 +4,7 @@ configure :development do
   set :show_exceptions, true
   set :static, false
   set :sessions, true
-  set :highlighting, 'rack'
+  set :highlighting, 'zenburn'
   set :logging, false # stop annoying double log messages...
   set :session_secret, "Ns7uwEYgHlvYp9-!.:R%*s{=#4}05J|'!*?YS[Ah7dn_SWa'.?(yMJ&.EzOskg"
   set :background, 'http://catlovers.todayblogpost.com/wp-content/uploads/2011/01/wpid-ScottishFoldHistory21.jpg'

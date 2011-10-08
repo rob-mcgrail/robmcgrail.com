@@ -77,4 +77,5 @@ p + h2.smaller{padding-top:1em;}
 .column{background-color:white;padding:1em;}
 input{padding:10px;margin-top:5px;margin-bottom:5px;}
 .hint{color:grey;}
-
+.multiline_code{padding-top:13px; }
+.CodeRay{padding-left:10px;}
