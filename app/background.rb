@@ -15,6 +15,16 @@ get '/background/?' do
   haml :'background/change'
 end
 
+
+get '/background/random/?' do
+  @title = title 'randomise'
+  @background = Background.new(:url => Background.random.url)
+  @background.save
+  flash[:success] = 'Random Background Instantiation Performed'
+  redirect '/'
+end
+
+
 post '/background/?' do
   authorize!
   @title = title 'background'
@@ -36,14 +46,12 @@ post '/background/?' do
 end
 
 
-helpers do
-  def sync_background
-    begin
-      settings.background = Background.last.url
-    rescue
-      @background = Background.new(:url => settings.background)
-      @background.save
-      retry
-    end
+before do
+  begin
+    settings.background = Background.last.url
+  rescue
+    @background = Background.new(:url => settings.background)
+    @background.save
+    retry
   end
 end

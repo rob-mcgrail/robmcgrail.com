@@ -1,7 +1,6 @@
 get '/?' do
   @title = title 'home'
   @content = :'content/homepage'
-  sync_background
   haml :main
 end
 
