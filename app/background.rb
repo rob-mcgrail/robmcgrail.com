@@ -48,7 +48,7 @@ end
 
 before do
   begin
-    settings.background = Background.last.url
+    @background_url = Background.last.url
   rescue
     @background = Background.new(:url => settings.background)
     @background.save

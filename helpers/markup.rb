@@ -3,9 +3,11 @@ helpers do
     "#{str} | robmcgrail.com"
   end
 
+
   def full_link_to(name, url, opts={})
     link_to(name, url_for(url, :full), opts)
   end
+
 
   def print_tags(object, opts={})
     str = ''
@@ -21,8 +23,16 @@ helpers do
     str
   end
 
+
+  #Method overide
+  def form_method(method)
+    "<input name='_method' type='hidden' value='#{method}' />"
+  end
+
+
+  # Horrible
   def delete_link(name, url, opts={})
-  "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
+    "<form name='delete' method='POST' action='#{url}'><a href='javascript:document.delete.submit()'>#{name}</a></form>"
   end
 
 

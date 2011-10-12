@@ -22,14 +22,18 @@ module SolrHelpers
     record.to_xml
   end
   
-  def self.solr_delete
+  def self.delete(o)
     delete_reference = "<delete><id>#{o.id}</id></delete>"
-    self.solr_update(delete_reference)
+    self.update(delete_reference)
   end
   
   
-  def self.solr_update(record, uri='http://0.0.0.0:8983/solr/update')
-    RestClient.post uri, record, :content_type => 'text/xml; charset=utf-8'
+  def self.update(record, uri='http://0.0.0.0:8983/solr/update')
+    begin
+      RestClient.post uri, record, :content_type => 'text/xml; charset=utf-8'
+    rescue
+      warn "SolrHelpers.solr_update failed to make a connection to #{uri}"
+    end
   end
   
 end

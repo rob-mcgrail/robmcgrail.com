@@ -36,11 +36,11 @@ class BlogPost
   end
   
   def to_solr
-    SolrHelpers.solr_update(self.to_xml)
+    SolrHelpers.update(self.to_xml)
   end
   
   def delete_from_solr
-    SolrHelpers.solr_delete(self)
+    SolrHelpers.delete(self)
   end
   
   def to_xml
@@ -200,7 +200,7 @@ get '/blog/edit/:id/?' do
 end
 
 
-post '/blog/edit/:id/?' do
+put '/blog/edit/:id/?' do
   authorize!
   @post = BlogPost.get(params[:id])
   @post.title = params[:title]

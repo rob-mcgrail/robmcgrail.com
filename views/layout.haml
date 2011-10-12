@@ -9,7 +9,7 @@
             = javascript_script_tag '/js/html5.js'
         :javascript
             $(document).ready(function() {$('input[title]').inputHints();});
-    %body(id='page' style='background-image:url("#{settings.background}");background-repeat:repeat;')
+    %body(id='page' style='background-image:url("#{@background_url}");background-repeat:repeat;')
         %div(class='column unitx5 first' id='main-content')
             = haml :flashes
             = haml @header || :header

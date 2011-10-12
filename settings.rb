@@ -1,5 +1,5 @@
 configure :development do
-  set :db, 'sqlite3://' + settings.root + '/db/production.sqlite3'
+  set :db, 'sqlite3://' + settings.root + '/db/development.sqlite3'
 	set :raise_errors, true
   set :show_exceptions, true
   set :static, false
@@ -8,6 +8,7 @@ configure :development do
   set :logging, false # stop annoying double log messages...
   set :session_secret, "Ns7uwEYgHlvYp9-!.:R%*s{=#4}05J|'!*?YS[Ah7dn_SWa'.?(yMJ&.EzOskg"
   set :background, 'http://catlovers.todayblogpost.com/wp-content/uploads/2011/01/wpid-ScottishFoldHistory21.jpg'
+  set :method_override, true
 end
 
 configure :production do
@@ -20,6 +21,7 @@ configure :production do
   set :logging, false # stop annoying double log messages...
   set :session_secret, "Ns7uwEYgHlvYp9-!.:R%*s{=#4}05J|'!*?YS[Ah7dn_SWa'.?(yMJ&.EzOskg"
   set :background, 'http://catlovers.todayblogpost.com/wp-content/uploads/2011/01/wpid-ScottishFoldHistory21.jpg'
+  set :method_override, true
 end
 
 # Database
