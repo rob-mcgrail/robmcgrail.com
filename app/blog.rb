@@ -83,10 +83,10 @@ end
 
 
 get '/code/:slug/?' do
-  @title = title 'code'
-
   @post = BlogPost.of_category('code').first(:slug => params[:slug])
 
+  @title = title @post.title
+  
   haml :'blog/show'
 end
 
@@ -103,9 +103,9 @@ end
 
 
 get '/usa/:slug/?' do
-  @title = title 'usa'
-
   @post = BlogPost.of_category('usa').first(:slug => params[:slug])
+
+  @title = title @post.title
 
   haml :'blog/show'
 end
@@ -124,9 +124,9 @@ end
 
 
 get '/things/:slug/?' do
-  @title = title 'things'
-
   @post = BlogPost.of_category('things').first(:slug => params[:slug])
+
+  @title = title @post.title
 
   haml :'blog/show'
 end

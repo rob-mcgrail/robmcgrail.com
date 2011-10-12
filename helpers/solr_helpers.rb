@@ -32,7 +32,7 @@ module SolrHelpers
     begin
       RestClient.post uri, record, :content_type => 'text/xml; charset=utf-8'
     rescue
-      warn "SolrHelpers.solr_update failed to make a connection to #{uri}"
+      warn "SolrHelpers.update failed to update #{uri}"
     end
   end
   
