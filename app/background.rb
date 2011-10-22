@@ -28,7 +28,7 @@ end
 post '/background/?' do
   authorize!
   @title = title 'background'
-  
+
   if params[:background] =~ URI::regexp
     @background = Background.new(:url => params[:background])
   else
