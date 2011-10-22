@@ -60,7 +60,6 @@ end
 ###############
 
 get '/blog/?' do
-  authorize!
   @title = title 'blog'
 
   @posts = BlogPost.all(:order => [ :created_at.desc ])
