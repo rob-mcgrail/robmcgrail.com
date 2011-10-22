@@ -63,7 +63,7 @@ end
 
 post '/unauthenticated/?' do
   status 401
-  flash[:error] = 'Wrong username and password'
+  flash[:error] = 'Wrong :|'
   redirect '/login'
 end
 
