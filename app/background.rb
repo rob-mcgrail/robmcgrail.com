@@ -28,8 +28,8 @@ end
 post '/background/?' do
   authorize!
   @title = title 'background'
-
-  if params[:background] =~ URI::regexp
+  
+  if valid_image_link(params[:background])
     @background = Background.new(:url => params[:background])
   else
     flash[:error] = 'Invalid url'
