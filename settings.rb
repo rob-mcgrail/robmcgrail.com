@@ -30,7 +30,7 @@ configure :production do
   set :sessions, true
   set :logging, false # stop annoying double log messages...
   set :haml, {:format => :html5, :ugly => true }
-  set :feed_cache, 400
+  set :feed_cache, 900
 end
 
 # Database
