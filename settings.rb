@@ -19,6 +19,7 @@ configure :development do
   set :background, 'http://catlovers.todayblogpost.com/wp-content/uploads/2011/01/wpid-ScottishFoldHistory21.jpg'
   set :method_override, true
   set :haml, {:format => :html5, :ugly => true }
+  set :feed_cache, 20
 end
 
 configure :production do
@@ -30,6 +31,7 @@ configure :production do
   set :highlighting, 'zenburn'
   set :logging, false # stop annoying double log messages...
   set :haml, {:format => :html5, :ugly => true }
+  set :feed_cache, 400
 end
 
 # Database

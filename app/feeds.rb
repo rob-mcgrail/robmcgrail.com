@@ -89,7 +89,7 @@ class Feeds
   end
 
   def self.get(i=10)
-    if (Time.now - @@t) > 50 || @@a == []
+    if (Time.now - @@t) > settings.feed_cache || @@a == []
       @@a = self.feeds(i)
       @@t = Time.now
     end
