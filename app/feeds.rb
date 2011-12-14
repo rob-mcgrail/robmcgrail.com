@@ -14,6 +14,7 @@ class Feeds
         o = OpenStruct.new
         o.text = raw_results.xpath('//item/description')[num].text
         o.text = o.text[0..144]
+        o.text = o.text + ' ...' if o.text.length > 144
         o.url = raw_results.xpath('//item/link')[num].text
         o.date = Time.parse(raw_results.xpath('//item/dc:date')[num].text)
         o.icon = 'reddit-icon.png'
@@ -32,7 +33,7 @@ class Feeds
         o = OpenStruct.new
         o.text = raw_results.xpath('//item/title')[num].text
         o.url = raw_results.xpath('//item/link')[num].text
-        o.text = 'Robomc listened to ' + "<a href='o.url'>#{o.text}</a>"
+        o.text = 'Robomc listened to ' + "<a href='#{o.url}'>#{o.text}</a>"
         o.date = Time.parse(raw_results.xpath('//item/pubDate')[num].text)
         o.icon = 'lastfm-icon.png'
         @tracks << o
@@ -69,7 +70,7 @@ class Feeds
         o.text = raw_results.xpath('//xmlns:entry/xmlns:title')[num].text
         o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
         o.text = o.text.gsub('robomc', '<a href="https://github.com/robomc">robomc</a>')
-        o.url = raw_results.xpath('//xmlns:entry/xmlns:link')[num].text
+        o.url = raw_results.xpath('//xmlns:entry/xmlns:link/@href')[num].text
         o.date = Time.parse(raw_results.xpath('//xmlns:entry/xmlns:published')[num].text)
         o.icon = 'github-icon.png'
         @activities << o
