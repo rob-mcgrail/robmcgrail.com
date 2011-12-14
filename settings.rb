@@ -28,7 +28,6 @@ configure :production do
   set :show_exceptions, false
   set :static, false
   set :sessions, true
-  set :highlighting, 'zenburn'
   set :logging, false # stop annoying double log messages...
   set :haml, {:format => :html5, :ugly => true }
   set :feed_cache, 400
