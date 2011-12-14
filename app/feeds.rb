@@ -6,7 +6,7 @@ class Feeds
   @@a = []
   
   
-  def self.reddit(i=4, feed=settings.reddit_feed)
+  def self.reddit(i=3, feed=settings.reddit_feed)
     @comments=[]
     begin
       raw_results = Nokogiri::XML(open(URI.encode(feed)))
@@ -24,7 +24,7 @@ class Feeds
   end
   
   
-  def self.lastfm(i=4, feed=settings.lastfm_feed)
+  def self.lastfm(i=3, feed=settings.lastfm_feed)
     @tracks=[]
     begin
       raw_results = Nokogiri::XML(open(URI.encode(feed)))
@@ -42,7 +42,7 @@ class Feeds
   end
   
   
-  def self.twitter(i=4, feed=settings.twitter_feed)
+  def self.twitter(i=3, feed=settings.twitter_feed)
     @tweets=[]
     begin
       raw_results = Nokogiri::XML(open(URI.encode(feed)))
@@ -60,7 +60,7 @@ class Feeds
 	  @tweets
   end
 
-  def self.github(i=4, feed=settings.github_feed)
+  def self.github(i=3, feed=settings.github_feed)
     @activities=[]
     begin
       raw_results = Nokogiri::XML(open(URI.encode(feed)))
@@ -80,10 +80,10 @@ class Feeds
   
   def self.feeds(i=5)
     a = []
-    a = a + self.github
-    a = a + self.twitter
-    a = a + self.reddit
-    a = a + self.lastfm
+    a = a + self.github((i/4).to_i)
+    a = a + self.twitter((i/4).to_i)
+    a = a + self.reddit((i/4).to_i)
+    a = a + self.lastfm((i/4).to_i)
     puts '!'
     a.sort! {|x,y| y.date <=> x.date}
   end
