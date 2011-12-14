@@ -1,6 +1,7 @@
 get '/?' do
   @title = title 'home'
   @content = :'content/homepage'
+  @feeds = Feeds.get(12)
   haml :main
 end
 

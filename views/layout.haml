@@ -15,7 +15,7 @@
             = haml @header || :header
             %div
                 = yield if block_given?
-            %footer.line
+            %footer.line.unitx5.column.first
                 %div
                     %small.subtle
                         ~ textile @footer || :'content/footer'

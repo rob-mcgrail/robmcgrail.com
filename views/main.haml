@@ -1,3 +1,7 @@
 %article
     ~ textile @content if @content
-
+    - if @feeds
+        %br
+        %h3
+            Disregard this it's not finished or whatever
+        = haml :feeds

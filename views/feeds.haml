@@ -1,0 +1,8 @@
+.feeds
+    - @feeds.each do |item|
+        .feed-item
+            .feed-image.column.first.unitx1
+                =link_to("<img src='images/#{item.icon}' height='30' width='30'>", item.url)
+            .feed-text.column.unitx3
+                %p
+                    = item.text

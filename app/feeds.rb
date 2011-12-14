@@ -2,63 +2,97 @@ require 'nokogiri'
 require 'ostruct'
 
 class Feeds
-  def self.reddit(i=3, feed=settings.reddit_feed)
+  @@t = Time.now
+  @@a = []
+  
+  
+  def self.reddit(i=4, feed=settings.reddit_feed)
     @comments=[]
-    raw_results = Nokogiri::XML(open(URI.encode(feed)))
-    i.times do |num|
-      o = OpenStruct.new
-      o.text = raw_results.xpath('//item/description')[num].text
-      o.url = raw_results.xpath('//item/link')[num].text
-      o.date = raw_results.xpath('//item/dc:date')[num].text
-      @comments << o
+    begin
+      raw_results = Nokogiri::XML(open(URI.encode(feed)))
+      i.times do |num|
+        o = OpenStruct.new
+        o.text = raw_results.xpath('//item/description')[num].text
+        o.text = o.text[0..144]
+        o.url = raw_results.xpath('//item/link')[num].text
+        o.date = Time.parse(raw_results.xpath('//item/dc:date')[num].text)
+        o.icon = 'reddit-icon.png'
+        @comments << o
+      end
     end 
 	  @comments
   end
   
-  def self.lastfm(i=3, feed=settings.lastfm_feed)
+  
+  def self.lastfm(i=4, feed=settings.lastfm_feed)
     @tracks=[]
-    raw_results = Nokogiri::XML(open(URI.encode(feed)))
-    i.times do |num|
-      o = OpenStruct.new
-      o.text = raw_results.xpath('//item/title')[num].text
-      o.url = raw_results.xpath('//item/link')[num].text
-      o.date = raw_results.xpath('//item/pubDate')[num].text
-      @tracks << o
-    end 
+    begin
+      raw_results = Nokogiri::XML(open(URI.encode(feed)))
+      i.times do |num|
+        o = OpenStruct.new
+        o.text = raw_results.xpath('//item/title')[num].text
+        o.url = raw_results.xpath('//item/link')[num].text
+        o.text = 'Robomc listened to ' + "<a href='o.url'>#{o.text}</a>"
+        o.date = Time.parse(raw_results.xpath('//item/pubDate')[num].text)
+        o.icon = 'lastfm-icon.png'
+        @tracks << o
+      end 
+    end
 	  @tracks
   end
   
-  def self.twitter(i=3, feed=settings.twitter_feed)
+  
+  def self.twitter(i=4, feed=settings.twitter_feed)
     @tweets=[]
-    raw_results = Nokogiri::XML(open(URI.encode(feed)))
-    i.times do |num|
-      o = OpenStruct.new
-      o.text = raw_results.xpath('//item/title')[num].text.gsub('scaredofbabies: ','')
-      o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
-      o.text = o.text.gsub(/(#\w+)/, "<a href=\"http://twitter.com/search?q=\\1\">\\1</a>")
-      o.url = raw_results.xpath('//item/link')[num].text
-      o.date = raw_results.xpath('//item/pubDate')[num].text
-      @tweets << o
+    begin
+      raw_results = Nokogiri::XML(open(URI.encode(feed)))
+      i.times do |num|
+        o = OpenStruct.new
+        o.text = raw_results.xpath('//item/title')[num].text.gsub('scaredofbabies: ','')
+        o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
+        o.text = o.text.gsub(/(#\w+)/, "<a href=\"http://twitter.com/search?q=\\1\">\\1</a>")
+        o.url = raw_results.xpath('//item/link')[num].text
+        o.date = Time.parse(raw_results.xpath('//item/pubDate')[num].text)
+        o.icon = 'twitter-icon.png'
+        @tweets << o
+      end
     end 
 	  @tweets
   end
 
-  def self.github(i=3, feed=settings.github_feed)
+  def self.github(i=4, feed=settings.github_feed)
     @activities=[]
-    raw_results = Nokogiri::XML(open(URI.encode(feed)))
-    i.times do |num|
-      o = OpenStruct.new
-      o.text = raw_results.xpath('//xmlns:entry/xmlns:title')[num].text
-      o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
-      o.text = o.text.gsub('robomc', '<a href="https://github.com/robomc">robomc</a>')
-      o.url = raw_results.xpath('//xmlns:entry/xmlns:link')[num].text
-      o.date = raw_results.xpath('//xmlns:entry/xmlns:published')[num].text
-      @activities << o
+    begin
+      raw_results = Nokogiri::XML(open(URI.encode(feed)))
+      i.times do |num|
+        o = OpenStruct.new
+        o.text = raw_results.xpath('//xmlns:entry/xmlns:title')[num].text
+        o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
+        o.text = o.text.gsub('robomc', '<a href="https://github.com/robomc">robomc</a>')
+        o.url = raw_results.xpath('//xmlns:entry/xmlns:link')[num].text
+        o.date = Time.parse(raw_results.xpath('//xmlns:entry/xmlns:published')[num].text)
+        o.icon = 'github-icon.png'
+        @activities << o
+      end
     end 
 	  @activities
   end
-end
+  
+  def self.feeds(i=5)
+    a = []
+    a = a + self.github
+    a = a + self.twitter
+    a = a + self.reddit
+    a = a + self.lastfm
+    puts '!'
+    a.sort! {|x,y| y.date <=> x.date}
+  end
 
-get '/feeds/?' do
-  Feeds.twitter.first.text
+  def self.get(i=10)
+    if (Time.now - @@t) > 50 || @@a == []
+      @@a = self.feeds(i)
+      @@t = Time.now
+    end
+    @@a[0..i]
+  end
 end
