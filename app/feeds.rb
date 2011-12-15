@@ -79,13 +79,13 @@ class Feeds
 	  @activities
   end
   
-  def self.feeds(i=8)
+  def self.feeds(i)
     a = []
     a = a + self.github( (i/2).to_i ) 
-    a = a + self.twitter( (i/6).to_i )
+    a = a + self.twitter( (i/3).to_i )
     a = a + self.reddit( (i/6).to_i )
-    a = a + self.lastfm( (i/4).to_i )
-    a.sort! {|x,y| y.date <=> x.date}.shuffle!
+    a = a + self.lastfm( (i/2).to_i )
+    a.sort! {|x,y| y.date <=> x.date}
   end
 
   def self.get(i=10)

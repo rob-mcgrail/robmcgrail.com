@@ -16,8 +16,6 @@ configure :development do
 	set :raise_errors, true
   set :show_exceptions, true
   set :static, false
-  set :background, 'http://catlovers.todayblogpost.com/wp-content/uploads/2011/01/wpid-ScottishFoldHistory21.jpg'
-  set :method_override, true
   set :haml, {:format => :html5, :ugly => true }
   set :feed_cache, 20
 end
@@ -27,10 +25,8 @@ configure :production do
 	set :raise_errors, false
   set :show_exceptions, false
   set :static, false
-  set :sessions, true
-  set :logging, false # stop annoying double log messages...
   set :haml, {:format => :html5, :ugly => true }
-  set :feed_cache, 900
+  set :feed_cache, 500
 end
 
 # Database
