@@ -84,7 +84,7 @@ class Feeds
     a = a + self.github( (i/2).to_i ) 
     a = a + self.twitter( (i/3).to_i )
     a = a + self.reddit( (i/6).to_i )
-    a = a + self.lastfm( i )
+    a = a + self.lastfm( (i/2).to_i )
     a.sort! {|x,y| y.date <=> x.date}
   end
 
