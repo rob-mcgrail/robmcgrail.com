@@ -1,3 +1,9 @@
+error ::Exception do
+  response.status = 500
+  content_type 'text/html'
+  '<h1>SOPA RONPAUL BLACKOUT@)!@</h1>'
+end
+
 configure do
   set :method_override, true # For HTTP verbs
   set :sessions, true
