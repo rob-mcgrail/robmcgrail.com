@@ -1,8 +1,10 @@
 .feeds
     - @feeds.each do |item|
-        .feed-item
-            .feed-image
-                =link_to("<img src='images/#{item.icon}' height='25' width='25'>", item.url)
-            .feed-text
-                .text
-                    = item.text
+        %ul.feedList.unstyled
+            %li.feedItem
+                .feedImage
+                    !=link_to("<img src='img/#{item.icon}' width='20'>", item.url)
+                .feedText
+                    .text
+                        != item.text
+                        

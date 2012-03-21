@@ -1,18 +1,21 @@
-- if flash[:success] || flash[:error]
-    :javascript
-        $(document).ready(function(){
-        $('h2').hide();
-        $('h2.warning, h2.message').show();
-        setTimeout(function(){
-        $(".message, .warning").fadeOut("fast", function () {
-        $('h2').show();
-        $("h2.warning, h2.message").remove();
-        }); }, 2000);
-        });
-    - if flash[:success]
-        %h2.message
-            = flash[:success]
-    - if flash[:error]
-        %h2.warning
-            = flash[:error]
-
+.row
+    .span7
+        - if flash[:default]  
+            .alert.fade.in
+                != link_to 'x', '#', {:class => 'close', 'data-dismiss' => 'alert'}
+                != flash[:default]
+                                    
+        - if flash[:info]  
+            .alert.alert-info.fade.in
+                != link_to 'x', '#', {:class => 'close', 'data-dismiss' => 'alert'}
+                != flash[:info]
+                        
+        - if flash[:success]
+            .alert.alert-success.fade.in
+                != link_to 'x', '#', {:class => 'close', 'data-dismiss' => 'alert'}
+                != flash[:success]
+                                               
+        - if flash[:error]
+            .alert.alert-error.fade.in  
+                != link_to 'x', '#', {:class => 'close', 'data-dismiss' => 'alert'}
+                != flash[:error]

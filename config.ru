@@ -1,19 +1,28 @@
 require 'rubygems'
-require 'sinatra'
+require 'bundler'
+
+Bundler.setup(:default)
 
 require 'app'
 
-#use Rack::Session::Cookie, :key => '_robo', :secret => "Ns7uwEYgHlvYp9-!.:R%*s{=#4}05J|'!*?YS[Ah7dn_SWa'.?(yMJ&.EzOskg"
 
-# Serve assets locally in development mode; served via reverse proxy in production mode
+# Rack configuration
+
+# Serve static files in dev 
+
 if settings.development?
-  use Rack::Static, :urls => ["/stylesheets", "/js", "/images", "robots.txt"], :root => "public"
+  use Rack::Static, :urls => ['/css', '/img', '/js', '/less', '/robots.txt', '/favicons.ico'], :root => "public"
 end
+
+# Authentication middleware
+# https://github.com/hassox/warden/wiki/overview
 
 use Warden::Manager do |mgmt|
   mgmt.default_strategies :password
   mgmt.failure_app = Sinatra::Application
 end
 
-run Sinatra::Application
 
+# Run
+
+run Sinatra::Application

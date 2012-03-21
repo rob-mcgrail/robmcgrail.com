@@ -1,7 +1,0 @@
-require 'app.rb'
-
-puts 'Creating user'
-
-User.first_or_create(:username => 'rob',
-                     :password => 'password'.to_hash)
-

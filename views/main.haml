@@ -1,5 +1,13 @@
-%article
-    ~ textile @content if @content
-    - if @feeds
-        %br
-        = haml :feeds
+.row
+    .span5.introBlock
+        :textile
+
+            You're probably looking for "this":http://twitter.com/robmcgrail rob mcgrail, or maybe "this":http://www.robertmcgraildds.com/ one. I'm basically just squatting.
+
+            When that's not what I'm doing, posts and other things sometimes go up. Other times they do that but on pages that aren't linked to from anywhere. For mystery.
+
+.row
+    .span5.feedBlock.readable
+        - if @feeds
+            != haml :feeds          
+

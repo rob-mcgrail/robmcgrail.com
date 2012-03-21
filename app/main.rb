@@ -1,23 +1,12 @@
 get '/?' do
-  @title = title 'home'
-  @content = :'content/homepage'
-  @feeds = Feeds.get(20)
+  title
+  @feeds = Feeds.get
   haml :main
 end
 
-get '/about/?' do
-  @title = title 'about'
-  @content = :'content/about'
-  haml :main
-end
 
-get '/academic/?' do
-  @title = title 'academic'
-  @content = :'content/academic'
-  haml :main
+post '/change/?' do
+  title
+  settings.background = params[:url]
+  200
 end
-
-get '/mu-1234-cafe-5678-babe' do
-  '42'
-end
-

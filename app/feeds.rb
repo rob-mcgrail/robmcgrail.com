@@ -1,98 +1,143 @@
 require 'nokogiri'
 require 'ostruct'
+require 'uri'
+require 'open-uri'
 
 class Feeds
   @@t = Time.now
   @@a = []
+
   
+  def self.get
+    if (Time.now - @@t) > settings.feed_cache || @@a == []
+      @@a = self.feeds
+      @@t = Time.now
+    end
+    @@a
+  end  
+  
+
+  def self.feeds
+    a = []
+    reddit = self.reddit(10)
+    lastfm = self.lastfm(10)
+    twitter = self.twitter(10)
+    github = self.github(10)
+    a = a + reddit if reddit
+    a = a + lastfm if lastfm
+    a = a + twitter if twitter
+    a = a + github if github
+    a.sort! {|x,y| y.date <=> x.date}
+  end
+
   
   def self.reddit(i=3, feed=settings.reddit_feed)
-    @comments=[]
-    begin
-      raw_results = Nokogiri::XML(open(URI.encode(feed)))
-      i.times do |num|
-        o = OpenStruct.new
-        o.text = raw_results.xpath('//item/description')[num].text
-        o.text = o.text[0..144]
-        o.text = o.text + ' ...' if o.text.length > 144
-        o.url = raw_results.xpath('//item/link')[num].text
-        o.date = Time.parse(raw_results.xpath('//item/dc:date')[num].text)
-        o.icon = 'reddit-icon.png'
-        @comments << o
+    xpaths = {
+      :text => '//item/description',
+      :date => '//item/dc:date',
+      :url => '//item/link'
+    }
+    data = self.get_feed(feed)
+    if data
+      items = self.parse(i, data, xpaths)
+      items.each do |item|
+        item.icon = 'reddit-icon.png'
+        item.date = Time.parse(item.date)
+        item.url = item.url + '?context=3'
+        item.text = item.text[0..120]
+        item.text = item.text + " <a href='#{item.url}'>...</a>" if item.text.length > 120
+        item.text = BlueCloth.new(item.text).to_html
       end
-    end 
-	  @comments
+    end
   end
   
   
   def self.lastfm(i=3, feed=settings.lastfm_feed)
-    @tracks=[]
-    begin
-      raw_results = Nokogiri::XML(open(URI.encode(feed)))
-      i.times do |num|
-        o = OpenStruct.new
-        o.text = raw_results.xpath('//item/title')[num].text
-        o.url = raw_results.xpath('//item/link')[num].text
-        o.text = 'Robomc listened to ' + "<a href='#{o.url}'>#{o.text}</a>"
-        o.date = Time.parse(raw_results.xpath('//item/pubDate')[num].text)
-        o.icon = 'lastfm-icon.png'
-        @tracks << o
-      end 
+    xpaths = {
+      :text => '//item/title',
+      :date => '//item/pubDate',
+      :url => '//item/link'
+    }
+    data = self.get_feed(feed)
+    if data
+      items = self.parse(i, data, xpaths)
+      items.each do |item|
+        item.icon = 'lastfm-icon.png'
+        item.date = Time.parse(item.date)
+        item.text = "<p><a href='http://www.last.fm/user/robomc'>Robomc</a> listened to <a href='#{item.url}'>#{item.text}</a></p>"
+      end
     end
-	  @tracks
   end
-  
-  
+
+
   def self.twitter(i=3, feed=settings.twitter_feed)
-    @tweets=[]
-    begin
-      raw_results = Nokogiri::XML(open(URI.encode(feed)))
-      i.times do |num|
-        o = OpenStruct.new
-        o.text = raw_results.xpath('//item/title')[num].text.gsub('scaredofbabies: ','')
-        o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
-        o.text = o.text.gsub(/(#\w+)/, "<a href=\"http://twitter.com/search?q=\\1\">\\1</a>")
-        o.url = raw_results.xpath('//item/link')[num].text
-        o.date = Time.parse(raw_results.xpath('//item/pubDate')[num].text)
-        o.icon = 'twitter-icon.png'
-        @tweets << o
+    xpaths = {
+      :text => '//item/description',
+      :date => '//item/pubDate',
+      :url => '//item/link'
+    }
+    data = self.get_feed(feed)
+    if data
+      items = self.parse(i, data, xpaths)
+      items.each do |item|
+        item.icon = 'twitter-icon.png'
+        item.date = Time.parse(item.date)
+        item.text.gsub!('scaredofbabies: ','')
+        item.text.gsub!(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
+        item.text.gsub!(/(#\w+)/, "<a href=\"http://twitter.com/search?q=\\1\">\\1</a>")
+        item.text.gsub!(/@(\w+)/, "<a href=\"http://twitter.com/\\1\">@\\1</a>")
+        item.text = '<p>' + item.text + '</p>'
       end
-    end 
-	  @tweets
-  end
-
-  def self.github(i=3, feed=settings.github_feed)
-    @activities=[]
-    begin
-      raw_results = Nokogiri::XML(open(URI.encode(feed)))
-      i.times do |num|
-        o = OpenStruct.new
-        o.text = raw_results.xpath('//xmlns:entry/xmlns:title')[num].text
-        o.text = o.text.gsub(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
-        o.text = o.text.gsub('robomc', '<a href="https://github.com/robomc">robomc</a>')
-        o.url = raw_results.xpath('//xmlns:entry/xmlns:link/@href')[num].text
-        o.date = Time.parse(raw_results.xpath('//xmlns:entry/xmlns:published')[num].text)
-        o.icon = 'github-icon.png'
-        @activities << o
-      end
-    end 
-	  @activities
+    end
   end
   
-  def self.feeds(i)
-    a = []
-    a = a + self.github( (i/2).to_i ) 
-    a = a + self.twitter( (i/3).to_i )
-    a = a + self.reddit( (i/6).to_i )
-    a = a + self.lastfm( (i/2).to_i )
-    a.sort! {|x,y| y.date <=> x.date}
-  end
-
-  def self.get(i=10)
-    if (Time.now - @@t) > settings.feed_cache || @@a == []
-      @@a = self.feeds(i)
-      @@t = Time.now
+  
+  def self.github(i=3, feed=settings.github_feed)
+    xpaths = {
+      :text => '//xmlns:entry/xmlns:title',
+      :date => '//xmlns:entry/xmlns:published',
+      :url => '//xmlns:entry/xmlns:link/@href'
+    }
+    data = self.get_feed(feed)
+    if data
+      items = self.parse(i, data, xpaths)
+      items.each do |item|
+        item.icon = 'github-icon.png'
+        item.date = Time.parse(item.date)
+#        item.text.gsub!(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
+        item.text.gsub!(/ (\S+\/\S+)/, " <a href='https://github.com/\\1'>\\1</a> ")
+        item.text.gsub!(' pushed ', " <a href='#{item.url}'>pushed</a> ")
+        item.text.gsub!(/^robomc/, '<a href="https://github.com/robomc">Robomc</a> ')
+        item.text.gsub!(/gist: (\d+)/, "<a href='https://gist.github.com/\\1'>\\0</a>")
+        item.text = '<p>' + item.text + '</p>'
+      end
     end
-    @@a[0..i]
+  end
+  
+  
+  def self.parse(i, data, xpaths)
+    items = []
+    if data
+      i.times do |num|
+        o = OpenStruct.new
+        xpaths.each do |k,v|
+          o.send("#{k}=", data.xpath(v)[num].text)
+        end
+        items << o
+      end
+    else
+      nil
+    end
+    items
+  end
+  
+  
+  def self.get_feed(feed)
+    begin
+      raw = Nokogiri::XML(open(URI.encode(feed)))
+    rescue
+      nil
+    end
+    raw
   end
 end

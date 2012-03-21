@@ -1,0 +1,48 @@
+
+
+/* ===== Primary Styles ========================================================
+   Author: Rob McGrail
+   ========================================================================== */
+
+
+.alert {margin-bottom:0px;}
+.compact {line-height:120%;}
+
+/* Main */
+
+.introBlock {
+  padding:20px;
+  padding-bottom:5px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.readable {
+  background-image:url("/img/groovepaper.png");
+  background-repeat:repeat; 
+  padding-left:20px; 
+  padding-right:20px;
+}
+
+/* Header */
+.banner {
+  font-size:205%;
+  padding-top:10px;
+  padding-bottom:20px;
+}
+
+
+/* Feeds */
+.feedBlock {padding-top:20px;}
+.feedImage {
+  display:block;
+  float:left;
+  padding-top:2px;
+}
+.feedText {margin-left:35px;}
+.text > p {font-size:90%;}
+.feedItem {
+  background-color:#eee;
+  padding-left:4px;
+}
+
+
