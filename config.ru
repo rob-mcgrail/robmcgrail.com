@@ -17,10 +17,10 @@ end
 # Authentication middleware
 # https://github.com/hassox/warden/wiki/overview
 
-use Warden::Manager do |mgmt|
-  mgmt.default_strategies :password
-  mgmt.failure_app = Sinatra::Application
-end
+#use Warden::Manager do |mgmt|
+#  mgmt.default_strategies :password
+#  mgmt.failure_app = Sinatra::Application
+#end
 
 
 # Run
