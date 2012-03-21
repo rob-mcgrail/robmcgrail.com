@@ -35,11 +35,11 @@ end
 # Database
 # http://datamapper.rubyforge.org/dm-core/DataMapper.html
 
-DataMapper.setup(:default, settings.db)
+#DataMapper.setup(:default, settings.db)
 
-DataMapper::Property::String.length(255)
-DataMapper::Property.required(true)
-DataMapper::Logger.new($stdout, :info) if settings.development?
+#DataMapper::Property::String.length(255)
+#DataMapper::Property.required(true)
+#DataMapper::Logger.new($stdout, :info) if settings.development?
 
 # Redis
 # http://redis.io/commands

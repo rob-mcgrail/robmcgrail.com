@@ -11,12 +11,12 @@ gem "thin"
 gem "unicorn"
 
 # Datampper sqlite
-gem "datamapper"
-gem "dm-sqlite-adapter"
+#gem "datamapper"
+#gem "dm-sqlite-adapter"
 
 # Redis
-gem "redis"
-gem "SystemTimer"
+#gem "redis"
+#gem "SystemTimer"
 
 # Templating
 gem "haml"
@@ -24,8 +24,8 @@ gem "RedCloth"
 gem "bluecloth"
 
 # Authentication
-gem "warden"
-gem "bcrypt-ruby"
+#gem "warden"
+#gem "bcrypt-ruby"
 
 #Scripts
 gem "trollop"
