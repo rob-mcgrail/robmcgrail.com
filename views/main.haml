@@ -7,7 +7,17 @@
             When that's not what I'm doing, posts and other things sometimes go up. Other times they do that but on pages that aren't linked to from anywhere. For mystery.
 
 .row
-    .span5.feedBlock.readable
-        - if @feeds
-            != haml :feeds          
-
+    .span5.bodyBlock.readable
+        %ul.nav.nav-tabs
+            %li.active
+                %a{:href => '#stalk', :data => {:toggle => 'tab'}} Stalk
+            %li   
+                %a{:href => '#links', :data => {:toggle => 'tab'}} Links
+            
+            
+        .tab-content
+            .tab-pane.active#stalk    
+                - if @feeds
+                    != haml :feeds          
+            .tab-pane#links
+                Hello

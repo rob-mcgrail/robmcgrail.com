@@ -32,7 +32,10 @@
 
 
 /* Feeds */
-.feedBlock {padding-top:20px;}
+.bodyBlock {
+  padding-top:20px;
+  min-height:1600px;
+}
 .feedImage {
   display:block;
   float:left;
