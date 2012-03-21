@@ -3,11 +3,11 @@ require 'sinatra'
 require 'sinatra/static_assets'
 require 'sinatra/flash'
 # Database
-require 'dm-core'
-require 'dm-aggregates'
-require 'dm-validations'
-require 'dm-timestamps'
-require 'dm-migrations'
+#require 'dm-core'
+#require 'dm-aggregates'
+#require 'dm-validations'
+#require 'dm-timestamps'
+#require 'dm-migrations'
 # Redis
 #require 'redis'
 # Templates
@@ -15,8 +15,8 @@ require 'haml'
 require 'RedCloth'
 require 'bluecloth'
 # Authentication
-require 'warden'
-require 'bcrypt'
+#require 'warden'
+#require 'bcrypt'
 
 require 'settings'
 
