@@ -36,11 +36,13 @@
   padding-top:20px;
   min-height:1600px;
 }
+
 .feedImage {
   display:block;
   float:left;
   padding-top:2px;
 }
+
 .feedText {margin-left:35px;}
 .text > p {font-size:90%;}
 .feedItem {
