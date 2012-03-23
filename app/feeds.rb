@@ -44,8 +44,8 @@ class Feeds
         item.icon = 'reddit-icon.png'
         item.date = Time.parse(item.date)
         item.url = item.url + '?context=3'
-        item.text = item.text[0..120]
-        item.text = item.text + " <a href='#{item.url}'>...</a>" if item.text.length > 120
+        item.text = item.text[0..130]
+        item.text = item.text + " <a href='#{item.url}'>...</a>" if item.text.length > 130
         item.text = BlueCloth.new(item.text).to_html
       end
     end

@@ -12,13 +12,16 @@
 
 .introBlock {
   padding:20px;
-  padding-bottom:5px;
-  background: rgba(255, 255, 255, 0.8);
+  padding-bottom:15px;
+  background: rgba(135, 200, 220, 0.9);
 }
 
+.introBlock > p {font-size: 105%;}
+
 .readable {
-  background-image:url("/img/groovepaper.png");
-  background-repeat:repeat; 
+  background: rgba(255, 255, 255, 0.9);
+/*  background-image:url("/img/groovepaper.png");*/
+  background-repeat:repeat;
   padding-left:20px; 
   padding-right:20px;
 }
@@ -44,10 +47,16 @@
 }
 
 .feedText {margin-left:35px;}
-.text > p {font-size:93%;}
+
 .feedItem {
-  background-color:#eee;
   padding-left:4px;
 }
 
 
+/* Over-riding tabs */
+
+.bodyBlock > .nav-tabs > .active > a, .bodyBlock > .nav-tabs > .active > a:hover {
+  background: rgba(135, 200, 220, 0.85);
+}
+
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover { color:#222; }
