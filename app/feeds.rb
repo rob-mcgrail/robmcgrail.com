@@ -64,7 +64,7 @@ class Feeds
       items.each do |item|
         item.icon = 'lastfm-icon.png'
         item.date = Time.parse(item.date)
-        item.text = "<p><a href='http://www.last.fm/user/robomc'>Robomc</a> listened to <a href='#{item.url}'>#{item.text}</a></p>"
+        item.text = "<p><a href='http://www.last.fm/user/robomc'>robomc</a> listened to <a href='#{item.url}'>#{item.text}</a></p>"
       end
     end
   end
@@ -107,7 +107,7 @@ class Feeds
 #        item.text.gsub!(/((http|https):\/\/\S+)/, "<a href=\"\\0\">\\0</a>")
         item.text.gsub!(/ (\S+\/\S+)/, " <a href='https://github.com/\\1'>\\1</a> ")
         item.text.gsub!(' pushed ', " <a href='#{item.url}'>pushed</a> ")
-        item.text.gsub!(/^robomc/, '<a href="https://github.com/robomc">Robomc</a> ')
+        item.text.gsub!(/^robomc/, '<a href="https://github.com/robomc">robomc</a> ')
         item.text.gsub!(/gist: (\d+)/, "<a href='https://gist.github.com/\\1'>\\0</a>")
         item.text = '<p>' + item.text + '</p>'
       end

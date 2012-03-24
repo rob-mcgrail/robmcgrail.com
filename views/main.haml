@@ -9,15 +9,15 @@
     .bodyContent.readable
         %ul.nav.nav-tabs
             %li.active
-                %a{:href => '#stalk', :data => {:toggle => 'tab'}} Stalk
+                %a{:href => '#stalk', :data => {:toggle => 'tab'}} stalk
             %li   
-                %a{:href => '#links', :data => {:toggle => 'tab'}} Links
+                %a{:href => '#contact', :data => {:toggle => 'tab'}} contact
             
             
         .tab-content
-            .tab-pane.active#stalk    
+            .tab-pane.active#stalk   
                 - if @feeds
                     != haml :feeds
                            
-            .tab-pane#links
-                Hello
+            .tab-pane#contact
+                != haml :contact

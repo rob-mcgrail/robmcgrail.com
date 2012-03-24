@@ -32,8 +32,8 @@
 
 /* Header */
 .banner {
-  font-size:205%;
-  padding-top:10px;
+/*  font-size:205%;*/
+  padding-top:40px;
   padding-bottom:20px;
 }
 
@@ -47,14 +47,24 @@
 /* Body */
 .bodyContent {
   min-height:1600px;
+  padding-top: 20px;
+}
+
+h2.tabHeading {
+  margin-left:0px;
+  line-height:1em;
+  margin-bottom: 1em;
 }
 
 /* Feed */
 
+.feeds, .contact {
+  margin-right: 20px;
+  margin-left: 10px;
+}
+
 .feedItem {
   padding-left:4px;
-  margin-right: 20px;
-  margin-left: 5px;
 }
 
 .feedImage {
