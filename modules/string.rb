@@ -4,8 +4,8 @@ class String
   def parameterize(delimeter = '-')
     self.gsub(/[^a-z0-9\-_!?]+/i, delimeter).downcase
   end
-
-  def to_hash
+  
+  def encrypt
     BCrypt::Password.create(self)
   end
 
