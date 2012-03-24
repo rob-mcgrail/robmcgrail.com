@@ -23,25 +23,27 @@
             %script{:src => '//html5shiv.googlecode.com/svn/trunk/html5.js'}
             %script window.html5 || document.write('<script src="js/libs/html5.js"><\/script>')      
 
-    %body{:style => "background-image:url('#{settings.background}');background-repeat:repeat;"}
+    %body
         .container
-            .header
-                != haml :header
-            / /header
-            
-            -# Alerts via flash[:success] = 'RON PAUL'
-            -# .flashes
-                != haml :flashes        
-            -# / /flashes
-            
-            -# Views via :haml :'things/table'
-            .content
-                != yield if block_given?
-            / /content
+            .row
+                .span10
+                    .header
+                        != haml :header
+                    / /header
+                    
+                    -# Alerts via flash[:success] = 'RON PAUL'
+                    -# .flashes
+                        != haml :flashes        
+                    -# / /flashes
+                    
+                    -# Views via :haml :'things/table'
+                    .content
+                        != yield if block_given?
+                    / /content
 
-            %footer
-                != haml :footer
-            / /footer
+                    %footer
+                        != haml :footer
+                    / /footer
             
         / /container
         
