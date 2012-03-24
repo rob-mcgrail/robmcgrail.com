@@ -10,17 +10,21 @@
 
 /* Main */
 
-.introBlock {
-  padding:20px;
-  padding-bottom:15px;
-  background: rgba(135, 200, 220, 0.9);
+.block {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-.introBlock > p {font-size: 105%;}
+.intro {
+  padding-bottom:16px;
+  padding-top: 20px;
+  background: rgba(238, 238, 238, 0.85);
+}
+
+.intro > p {font-size: 106%;}
 
 .readable {
-  background: rgba(255, 255, 255, 0.9);
-/*  background-image:url("/img/groovepaper.png");*/
+  background: rgba(253, 253, 253, 1);
   background-repeat:repeat;
   padding-left:20px; 
   padding-right:20px;
@@ -35,9 +39,15 @@
 
 
 /* Feeds */
-.bodyBlock {
+.body {
   padding-top:20px;
   min-height:1600px;
+}
+
+.feedItem {
+  padding-left:4px;
+  margin-right: 20px;
+  margin-left: 5px;
 }
 
 .feedImage {
@@ -48,15 +58,12 @@
 
 .feedText {margin-left:35px;}
 
-.feedItem {
-  padding-left:4px;
-}
 
 
 /* Over-riding tabs */
 
-.bodyBlock > .nav-tabs > .active > a, .bodyBlock > .nav-tabs > .active > a:hover {
-  background: rgba(135, 200, 220, 0.85);
-}
+/*.bodyBlock > .nav-tabs > .active > a, .bodyBlock > .nav-tabs > .active > a:hover {*/
+/*  background: rgba(135, 200, 220, 0.85);*/
+/*}*/
 
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover { color:#222; }
+/*.nav-tabs > .active > a, .nav-tabs > .active > a:hover { color:#222; }*/
