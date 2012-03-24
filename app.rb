@@ -1,6 +1,5 @@
 # Sinatra
 require 'sinatra'
-require 'sinatra/static_assets'
 require 'sinatra/flash'
 
 # Templates/markup
