@@ -47,6 +47,7 @@ class Feeds
         item.text = item.text[0..100]
         item.text = item.text + " <a href='#{item.url}' class='plain'>...</a>" if item.text.length > 100
         item.text = BlueCloth.new(item.text).to_html
+        item.text.gsub!('href="/', 'href="http://reddit.com/')
       end
     end
   end
