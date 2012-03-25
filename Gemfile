@@ -2,7 +2,6 @@ source :rubygems
 
 # Sinatra
 gem "sinatra" 
-gem "sinatra-static-assets"
 gem "sinatra-flash"
 
 # Servers

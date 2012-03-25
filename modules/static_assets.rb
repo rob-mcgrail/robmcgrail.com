@@ -1,5 +1,12 @@
 require 'sinatra/base'
 
+# https://github.com/wbzyl/sinatra-static-assets
+#
+# Find it convenient to include this under modules rather than
+# as a gem - acts as documentation, and occasionally you'll want to tweak it.
+#
+# This fork applies timestamp param to images too.
+
 module Sinatra
   module StaticAssets
     module Helpers
