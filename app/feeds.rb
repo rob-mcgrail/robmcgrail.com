@@ -20,7 +20,7 @@ class Feeds
   def self.feeds
     a = []
     reddit = self.reddit(20)
-    lastfm = self.lastfm(40)
+    lastfm = self.lastfm(50)
     twitter = self.twitter(15)
     github = self.github(30)
     a = a + reddit if reddit
