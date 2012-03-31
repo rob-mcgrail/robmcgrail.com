@@ -6,6 +6,7 @@ gem "sinatra-flash"
 
 # Servers
 gem "thin"
+gem "unicorn"
 
 # Templating
 gem "haml"

@@ -19,10 +19,10 @@ class Feeds
 
   def self.feeds
     a = []
-    reddit = self.reddit(10)
-    lastfm = self.lastfm(30)
-    twitter = self.twitter(10)
-    github = self.github(10)
+    reddit = self.reddit(20)
+    lastfm = self.lastfm(40)
+    twitter = self.twitter(15)
+    github = self.github(30)
     a = a + reddit if reddit
     a = a + lastfm if lastfm
     a = a + twitter if twitter
