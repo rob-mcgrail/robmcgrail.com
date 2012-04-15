@@ -11,38 +11,26 @@
 /* Main */
 
 .window {
-  background-image:url('http://i52.tinypic.com/2mdsccn.jpg');
   background-repeat:repeat;
   clear:both;
 
 }
 
-.readable {
-  padding-left: 20px;
-  padding-right: 20px;
-}
 
 .intro {
-  padding-bottom: 5px;
   padding-top: 20px;
-  background-color: white;
-/*  background: rgba(238, 238, 238, 0.85);*/
 }
 
 
 /* Header */
 .banner {
-/*  font-size:205%;*/
   padding-top:40px;
-  padding-bottom:20px;
 }
 
-/*.intro > p {font-size: 106%;}*/
-
-.readable {
-  background: rgba(253, 253, 253, 1);
+.intro > p {
+  background: green;
+  padding-left: 6px;
 }
-
 
 /* Body */
 .bodyContent {
@@ -50,10 +38,15 @@
   padding-top: 20px;
 }
 
+h1, h2, h3, h4, dt {
+  font-family: Verdana, Sans;
+}
+
 h2.tabHeading {
+  font-size: 105%;
   margin-left:0px;
   line-height:1em;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 /* Feed */
@@ -75,12 +68,8 @@ h2.tabHeading {
 
 .feedText {margin-left:35px;}
 
+.feeds * p {
+  background: #eee;
+  padding-left: 3px;
+}
 
-
-/* Over-riding tabs */
-
-/*.bodyBlock > .nav-tabs > .active > a, .bodyBlock > .nav-tabs > .active > a:hover {*/
-/*  background: rgba(135, 200, 220, 0.85);*/
-/*}*/
-
-/*.nav-tabs > .active > a, .nav-tabs > .active > a:hover { color:#222; }*/
