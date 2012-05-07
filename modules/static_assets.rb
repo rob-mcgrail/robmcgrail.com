@@ -51,7 +51,7 @@ module Sinatra
       def url_for(addr, absolute = false)
         uri(addr, absolute == :full ? true : false, true)
       end
-      
+
       def is_uri?(path)
           path =~ %r{^[-a-z]+://|^cid:|^//}
       end
@@ -59,9 +59,10 @@ module Sinatra
       def asset_url_for(source)
         url = url_for(source)
         return url if is_uri?(source)
-          
-        timestamp = asset_timestamp(source)
-        url += "?#{timestamp}" unless timestamp.empty?
+        if settings.asset_timestamps
+          timestamp = asset_timestamp(source)
+          url += "?#{timestamp}" unless timestamp.empty?
+        end
         return url
       end
 
