@@ -4,8 +4,7 @@
         %ul.feedList.unstyled
             %li.feedItem
                 .feedImage
-                    !=link_to(image_tag("img/#{item.icon}", {:width => '20'}), item.url)
+                    !=link_to(image_tag("img/#{item.icon}", {:width => '20', :height => '20'}), item.url)
                 .feedText
                     .text
                         != item.text
-                        
