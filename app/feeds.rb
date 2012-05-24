@@ -7,21 +7,21 @@ class Feeds
   @@t = Time.now
   @@a = []
 
-  
+
   def self.get
     if (Time.now - @@t) > settings.feed_cache || @@a == []
       @@a = self.feeds
       @@t = Time.now
     end
     @@a
-  end  
-  
+  end
+
 
   def self.feeds
     a = []
-    reddit = self.reddit(20)
-    lastfm = self.lastfm(50)
-    twitter = self.twitter(15)
+    reddit = self.reddit(25)
+    lastfm = self.lastfm(100)
+    twitter = self.twitter(30)
     github = self.github(30)
     a = a + reddit if reddit
     a = a + lastfm if lastfm
@@ -30,7 +30,7 @@ class Feeds
     a.sort! {|x,y| y.date <=> x.date}
   end
 
-  
+
   def self.reddit(i=3, feed=settings.reddit_feed)
     xpaths = {
       :text => '//item/description',
@@ -51,8 +51,8 @@ class Feeds
       end
     end
   end
-  
-  
+
+
   def self.lastfm(i=3, feed=settings.lastfm_feed)
     xpaths = {
       :text => '//item/title',
@@ -91,8 +91,8 @@ class Feeds
       end
     end
   end
-  
-  
+
+
   def self.github(i=3, feed=settings.github_feed)
     xpaths = {
       :text => '//xmlns:entry/xmlns:title',
@@ -114,25 +114,27 @@ class Feeds
       end
     end
   end
-  
-  
+
+
   def self.parse(i, data, xpaths)
     items = []
     if data
       i.times do |num|
         o = OpenStruct.new
-        xpaths.each do |k,v|
-          o.send("#{k}=", data.xpath(v)[num].text)
+        if data.xpath(xpaths.values.first)[num]
+          xpaths.each do |k,v|
+            o.send("#{k}=", data.xpath(v)[num].text)
+          end
+          items << o
         end
-        items << o
       end
     else
       nil
     end
     items
   end
-  
-  
+
+
   def self.get_feed(feed)
     begin
       raw = Nokogiri::XML(open(URI.encode(feed)))
