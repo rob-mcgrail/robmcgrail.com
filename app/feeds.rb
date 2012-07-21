@@ -22,11 +22,13 @@ class Feeds
     reddit = self.reddit(25)
     lastfm = self.lastfm(100)
     twitter = self.twitter(30)
-    github = self.github(30)
+    github = self.github(20)
+    stack = self.stack(30)
     a = a + reddit if reddit
     a = a + lastfm if lastfm
     a = a + twitter if twitter
     a = a + github if github
+    a = a + stack if stack
     a.sort! {|x,y| y.date <=> x.date}
   end
 
@@ -110,6 +112,27 @@ class Feeds
         item.text.gsub!(' pushed ', " <a href='#{item.url}'>pushed</a> ")
         item.text.gsub!(/^robomc/, '<a href="https://github.com/robomc">robomc</a> ')
         item.text.gsub!(/gist: (\d+)/, "<a href='https://gist.github.com/\\1'>\\0</a>")
+        item.text = '<p>' + item.text + '</p>'
+      end
+    end
+  end
+
+
+  def self.stack(i=3, feed=settings.stack_feed)
+    xpaths = {
+      :text => '//xmlns:entry/xmlns:title',
+      :date => '//xmlns:entry/xmlns:published',
+      :url => '//xmlns:entry/xmlns:id'
+    }
+    data = self.get_feed(feed)
+    if data
+      items = self.parse(i, data, xpaths)
+      puts items
+      items.each do |item|
+        item.icon = 'stack-icon.png'
+        item.date = Time.parse(item.date)
+        item.text = item.text.gsub('robomc', '<a href="http://stackoverflow.com/users/982061">robomc</a>')
+        item.text = item.text.gsub(/Answer by robomc for (.+)/, "<a href='#{item.url}'>\\1</a>")
         item.text = '<p>' + item.text + '</p>'
       end
     end

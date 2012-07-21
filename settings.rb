@@ -14,6 +14,7 @@ configure do
   set :lastfm_feed, 'http://ws.audioscrobbler.com/1.0/user/robomc/recenttracks.rss?limit=100'
   set :twitter_feed, 'http://twitter.com/statuses/user_timeline/20491432.rss?limit=30'
   set :github_feed, 'https://github.com/robomc.atom?limit=40'
+  set :stack_feed, 'http://stackoverflow.com/feeds/user/982061'
   set :background, 'http://i52.tinypic.com/2mdsccn.jpg'
   set :asset_timestamps, false
 #  set :redis, 1 # redis database
