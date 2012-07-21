@@ -131,8 +131,8 @@ class Feeds
       items.each do |item|
         item.icon = 'stack-icon.png'
         item.date = Time.parse(item.date)
-        item.text = item.text.gsub(/Answer by robomc for (.+)/, "<a href='#{item.url}'>\\0</a>")
-        item.text = item.text.gsub('robomc', '<a href="http://stackoverflow.com/users/982061">robomc</a>')
+        item.text.gsub!(/(Answer|Comment)/, "<a href='#{item.url}'>\\1</a>")
+        item.text.gsub!('robomc', '<a href="http://stackoverflow.com/users/982061">robomc</a>')
         item.text = '<p>' + item.text + '</p>'
       end
     end
