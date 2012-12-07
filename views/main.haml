@@ -1,24 +1,2 @@
-.row
-    .span3
-        .intro.readable
-
-            :textile
-                You're probably looking for "this":http://twitter.com/robmcgrail rob mcgrail, or maybe "this":http://www.robertmcgraildds.com/ one. I'm basically just squatting.
-
-                When that's not what I'm doing, posts and other things sometimes go up. Other times they do that but on pages that aren't linked to from anywhere. For mystery.
-    .span8
-        .bodyContent.readable
-            %ul.nav.nav-tabs
-                %li.active
-                    %a{:href => '#stalk', :data => {:toggle => 'tab'}} stalk
-                %li
-                    %a{:href => '#things', :data => {:toggle => 'tab'}} things
-
-
-            .tab-content
-                .tab-pane.active#stalk
-                    - if @feeds
-                        != haml :feeds
-
-                .tab-pane#things
-                    != haml :things
+- 1000.times do
+    != image_tag("img/uc.gif")

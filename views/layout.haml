@@ -6,19 +6,6 @@
         %title= @title || ''
         %meta{:content => "width=device-width", :name => "viewport"}
         %link{:href => 'img/favicon.ico', :type => 'image/x-icon', :rel => "shortcut icon"}
-
-        - if settings.development?
-            %link{:href => "less/style.less", :rel => "stylesheet/less"}
-            %script{:src => "js/libs/less-1.2.1.min.js"}
-
-        - if settings.production?
-            != stylesheet_link_tag "/css/core.css"
-
-        != stylesheet_link_tag "/css/style.css"
-
-        /[if lt IE 9]
-            %script{:src => '//html5shiv.googlecode.com/svn/trunk/html5.js'}
-            %script window.html5 || document.write('<script src="js/libs/html5.js"><\/script>')
         :javascript
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-31448727-1']);
@@ -31,48 +18,5 @@
             })();
 
     %body
-        .container
-            .row
-                .span12
-                    .header
-                        != haml :header
-                    / /header
+        != yield if block_given?
 
-                    -# Alerts via flash[:success] = 'RON PAUL'
-                    -# .flashes
-                        != haml :flashes
-                    -# / /flashes
-
-                    -# Views via :haml :'things/table'
-                    .content
-                        != yield if block_given?
-                    / /content
-
-                    %footer
-                        != haml :footer
-                    / /footer
-
-        / /container
-
-        %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"}
-        :javascript
-            window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')
-
-        -# Google pretify
-        -# != javascript_script_tag "js/libs/prettify/prettify.js"
-        -# %script prettyPrint();
-
-        -# Remove bootstrap scripts as required
-        -# != javascript_script_tag "js/libs/bootstrap/transition.js"
-        -# != javascript_script_tag "js/libs/bootstrap/alert.js"
-        -# != javascript_script_tag "js/libs/bootstrap/modal.js"
-        -# != javascript_script_tag "js/libs/bootstrap/dropdown.js"
-        -# != javascript_script_tag "js/libs/bootstrap/scrollspy.js"
-        != javascript_script_tag "js/libs/bootstrap/tab.js"
-        -# != javascript_script_tag "js/libs/bootstrap/tooltip.js"
-        -# != javascript_script_tag "js/libs/bootstrap/popover.js"
-        -# != javascript_script_tag "js/libs/bootstrap/button.js"
-        -# != javascript_script_tag "js/libs/bootstrap/collapse.js"
-        -# != javascript_script_tag "js/libs/bootstrap/carousel.js"
-        -# != javascript_script_tag "js/libs/bootstrap/typeahead.js"
-        != javascript_script_tag "/js/script.js"
